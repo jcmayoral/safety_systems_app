@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.interfaces.InterfaceActivity"
+
+    <!--include layout="@layout/activity_java_interface"/-->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".ui.interfaces.InterfaceActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+
+        <CheckBox
+            android:id="@+id/bluetoothcheckbox"
+            android:layout_width="111dp"
+            android:layout_height="105dp"
+            android:onClick="selectOption" />
+
+        <CheckBox
+            android:id="@+id/full_teleoperation"
+            android:layout_width="111dp"
+            android:layout_height="105dp" />
+
+        <TextView
+            android:id="@+id/text_interfaces"
+            android:layout_width="match_parent"
+            android:layout_height="63dp" />
+
+        <Button
+            android:id="@+id/button_mode_selection"
+            android:layout_width="388dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:onClick="selectMode" />
+    </LinearLayout>
+
+</LinearLayout>
