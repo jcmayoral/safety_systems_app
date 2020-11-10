@@ -36,6 +36,12 @@ public class EStopPublisher extends AbstractNodeMain {
         */
     }
 
+    @Override
+    public void onShutdown(Node node) {
+        publisher.shutdown();
+        node.shutdown();
+    }
+
     protected void toggleState(){
         state = !state;
     }
