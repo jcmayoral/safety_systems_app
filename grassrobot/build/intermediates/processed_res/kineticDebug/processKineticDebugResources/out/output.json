@@ -1,0 +1,1 @@
+[{"outputType":{"type":"PROCESSED_RES"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":2,"versionName":"1.0.0","enabled":true,"outputFile":"grassrobot-kinetic-debug.apk","fullName":"kineticDebug","baseName":"kinetic-debug"},"path":"resources-kineticDebug.ap_","properties":{"packageId":"com.github.rosjava.android_apps.teleop2.kinetic","split":"","minSdkVersion":"16"}}]

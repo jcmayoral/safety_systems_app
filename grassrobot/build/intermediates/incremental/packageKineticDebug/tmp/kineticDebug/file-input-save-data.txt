@@ -1,0 +1,7 @@
+#Internal package file, do not edit.
+#Tue Nov 10 16:11:09 CET 2020
+0.baseType=DIRECTORY
+0.base=/home/jose/android_ws/safety_systems_app/grassrobot/build/intermediates/transforms/dexMerger/kinetic/debug/0
+0.path=classes.dex
+0.set=DEX
+count=1

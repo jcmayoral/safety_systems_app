@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.ros.android_core:android_core_components:0.4.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/android_core_components-0.4.0.aar/87a630dca1a8dd45f2e7c16116316b27/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/android_core_components-0.4.0.aar/87a630dca1a8dd45f2e7c16116316b27/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/android_core_components-0.4.0.aar/87a630dca1a8dd45f2e7c16116316b27/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
