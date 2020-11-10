@@ -16,6 +16,7 @@
 
 package com.github.rosjava.android_apps.teleop2;
 
+import android.graphics.Color;
 import android.nfc.tech.Ndef;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,6 +28,7 @@ import com.github.rosjava.android_remocons.common_tools.apps.RosAppActivity;
 
 import org.apache.commons.logging.Log;
 import org.ros.android.BitmapFromCompressedImage;
+import org.ros.android.BitmapFromImage;
 import org.ros.android.view.RosImageView;
 import org.ros.android.view.VirtualJoystickView;
 
@@ -48,13 +50,15 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.ScheduledExecutorService;
 
+import sensor_msgs.CompressedImage;
+import sensor_msgs.Image;
 import std_msgs.Bool;
 
 /**
  * @author murase@jsk.imi.i.u-tokyo.ac.jp (Kazuto Murase)
  */
 public class MainActivity extends RosAppActivity {
-	private RosImageView<sensor_msgs.CompressedImage> cameraView;
+	private RosImageView<CompressedImage> cameraView;
 	private VirtualJoystickView virtualJoystickView;
 	private Button backButton;
 	EStopPublisher estop;
@@ -71,7 +75,7 @@ public class MainActivity extends RosAppActivity {
 		setMainWindowResource(R.layout.main);
 		super.onCreate(savedInstanceState);
 
-        cameraView = (RosImageView<sensor_msgs.CompressedImage>) findViewById(R.id.image);
+        cameraView = (RosImageView<CompressedImage>) findViewById(R.id.image);
         cameraView.setMessageType(sensor_msgs.CompressedImage._TYPE);
         cameraView.setMessageToBitmapCallable(new BitmapFromCompressedImage());
         virtualJoystickView = (VirtualJoystickView) findViewById(R.id.virtual_joystick);
@@ -86,6 +90,12 @@ public class MainActivity extends RosAppActivity {
 
 	public void pressEStop(View view){
 		estop.publish();
+		if(estop.getState()) {
+			view.setBackgroundColor(Color.parseColor("#FF0000"));
+		}
+		else{
+			view.setBackgroundColor(Color.parseColor("#00FF00"));
+		}
 	}
 
 	@Override
@@ -101,7 +111,7 @@ public class MainActivity extends RosAppActivity {
                     NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
 
 
-			String joyTopic = remaps.get(getString(R.string.joystick_topic));
+		String joyTopic = remaps.get(getString(R.string.joystick_topic));
         String camTopic = remaps.get(getString(R.string.camera_topic));
         String stopTopic = remaps.get("estop_topic");
 

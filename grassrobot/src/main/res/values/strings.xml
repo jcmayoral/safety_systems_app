@@ -2,7 +2,7 @@
 <resources>
     <string name="stop_app">Kill</string>
     <string name="app_name"> Grass Robot</string>
-    <string name="camera_topic">compressed_image</string>
+    <string name="camera_topic">/camera/color/image_raw/compressed</string>
     <string name="joystick_topic">cmd_vel</string>
     <string name="estop_topic">emergency_stop</string>
 </resources>

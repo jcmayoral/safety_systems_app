@@ -7,14 +7,18 @@ import org.ros.node.ConnectedNode;
 import org.ros.node.Node;
 import org.ros.node.topic.Publisher;
 
+import std_msgs.Bool;
 import std_msgs.String;
 
 public class EStopPublisher extends AbstractNodeMain {
-    public Publisher<std_msgs.String> publisher;
+    public Publisher<std_msgs.Bool> publisher;
+    boolean state;
 
     @Override
     public void onStart(ConnectedNode connectedNode) {
-        publisher = connectedNode.newPublisher("/estop", String._TYPE);
+        state = false;
+        publisher = connectedNode.newPublisher("/estop", Bool._TYPE);
+        /*
         connectedNode.executeCancellableLoop(new CancellableLoop() {
             @Override
             protected void setup() {
@@ -29,14 +33,24 @@ public class EStopPublisher extends AbstractNodeMain {
                 Thread.sleep(1000);
             }
         });
+        */
+    }
+
+    protected void toggleState(){
+        state = !state;
+    }
+
+    public boolean getState(){
+        return state;
     }
 
     public void publish(){
-        String msg = publisher.newMessage();
-        msg.setData("HELLO WORLD");
+        Bool msg = publisher.newMessage();
+        msg.setData(state);
+        toggleState();
         publisher.publish(msg);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
