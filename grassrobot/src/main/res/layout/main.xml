@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_view"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
@@ -32,63 +32,40 @@
     <LinearLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="242dp"
+            android:onClick="pressEStop"
+            android:text="Emergency Stop" />
 
         <LinearLayout
             android:id="@+id/side_layout"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="0dip"
-                android:layout_height="0dip"
-                android:layout_weight="1" />
-
-            <org.ros.android.view.VirtualJoystickView
-                android:id="@+id/virtual_joystick"
-                android:layout_width="wrap_content"
-                android:layout_height="23dp"
-                android:layout_gravity="center"
-                android:layout_weight="4"
-                android:adjustViewBounds="true">
-
-            </org.ros.android.view.VirtualJoystickView>
-
-            <View
-                android:layout_width="0dip"
-                android:layout_height="0dip"
-                android:layout_weight="1" />
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <org.ros.android.view.RosImageView
                 android:id="@+id/image"
-                android:layout_width="match_parent"
-                android:layout_height="145dp"
+                android:layout_width="223dp"
+                android:layout_height="match_parent"
                 android:layout_weight=".5"
                 android:src="@mipmap/icon"
                 android:visibility="visible"
                 tools:visibility="visible" />
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="match_parent"
-                android:layout_height="0dip"
-                android:layout_weight="1" />
+            <org.ros.android.view.VirtualJoystickView
+                android:id="@+id/virtual_joystick"
+                android:layout_width="198dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="4"
+                android:adjustViewBounds="true">
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="pressEStop"
-                android:text="Emergency Stop" />
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="match_parent"
-                android:layout_height="0dip"
-                android:layout_weight="1" />
+            </org.ros.android.view.VirtualJoystickView>
 
         </LinearLayout>
 
