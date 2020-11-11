@@ -38,6 +38,7 @@
             android:id="@+id/semiautonomous_button"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:onClick="semiAutomationMode"
             android:text="@string/tabname2" />
 
         <Space
@@ -48,6 +49,8 @@
             android:id="@+id/full_automation"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:onClick="fullAutomationMode"
+
             android:text="@string/tabname3" />
     </LinearLayout>
 

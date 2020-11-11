@@ -18,12 +18,7 @@ package com.github.rosjava.android_apps.teleop2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 /**
@@ -43,4 +38,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void semiAutomationMode(View view){
+        Intent intent = new Intent(this, SemiAutomationActivity.class);
+        startActivity(intent);
+    }
+
+    public void fullAutomationMode(View view){
+        Intent intent = new Intent(this, FullAutonomationActivity.class);
+        startActivity(intent);
+    }
 }

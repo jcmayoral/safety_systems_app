@@ -16,6 +16,17 @@
                   android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name="com.github.rosjava.android_apps.teleop2.SemiAutomationActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name="com.github.rosjava.android_apps.teleop2.FullAutonomationActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+
         <activity android:name="com.github.rosjava.android_apps.teleop2.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
