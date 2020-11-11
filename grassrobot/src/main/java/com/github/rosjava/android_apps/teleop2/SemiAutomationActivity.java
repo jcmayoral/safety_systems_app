@@ -41,7 +41,7 @@ import sensor_msgs.CompressedImage;
 public class SemiAutomationActivity extends RosAppActivity {
 	private RosImageView<CompressedImage> cameraView;
 	private Button backButton;
-	EStopPublisher estop;
+	static EStopPublisher estop;
 
 	public SemiAutomationActivity() {
 		// The RosActivity constructor configures the notification title and ticker messages.
