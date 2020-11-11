@@ -14,12 +14,18 @@
         <activity android:name="com.github.rosjava.android_apps.teleop2.MainActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name="com.github.rosjava.android_apps.teleop2.TabMainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.github.rosjava.android_apps.teleop2.MainActivity" />
+                <action android:name="com.github.rosjava.android_apps.teleop2.TabMainActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
