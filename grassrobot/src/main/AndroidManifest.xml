@@ -16,7 +16,7 @@
                   android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name="com.github.rosjava.android_apps.teleop2.TabMainActivity"
+        <activity android:name="com.github.rosjava.android_apps.teleop2.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:screenOrientation="portrait">
