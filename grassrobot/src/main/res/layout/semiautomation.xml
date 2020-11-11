@@ -35,6 +35,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="Semi Automation Mode"
+            android:textSize="30sp" />
+
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"

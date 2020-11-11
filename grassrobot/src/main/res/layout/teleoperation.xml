@@ -35,6 +35,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="Teleoperation Mode"
+            android:textSize="30sp" />
+
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
@@ -42,32 +50,15 @@
             android:onClick="pressEStop"
             android:text="Emergency Stop" />
 
-        <LinearLayout
-            android:id="@+id/side_layout"
-            android:layout_width="wrap_content"
+        <org.ros.android.view.VirtualJoystickView
+            android:id="@+id/virtual_joystick"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_gravity="center"
+            android:layout_weight="4"
+            android:adjustViewBounds="true">
 
-            <org.ros.android.view.RosImageView
-                android:id="@+id/image"
-                android:layout_width="223dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".5"
-                android:src="@mipmap/icon"
-                android:visibility="visible"
-                tools:visibility="visible" />
-
-            <org.ros.android.view.VirtualJoystickView
-                android:id="@+id/virtual_joystick"
-                android:layout_width="198dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="4"
-                android:adjustViewBounds="true">
-
-            </org.ros.android.view.VirtualJoystickView>
-
-        </LinearLayout>
+        </org.ros.android.view.VirtualJoystickView>
 
     </LinearLayout>
 

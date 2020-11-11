@@ -43,7 +43,6 @@ import sensor_msgs.CompressedImage;
  * @author murase@jsk.imi.i.u-tokyo.ac.jp (Kazuto Murase)
  */
 public class TeleoperationActivity extends RosAppActivity {
-	private RosImageView<CompressedImage> cameraView;
 	private VirtualJoystickView virtualJoystickView;
 	private Button backButton;
 	EStopPublisher estop;
@@ -61,9 +60,6 @@ public class TeleoperationActivity extends RosAppActivity {
 		// setDefaultAppName("Safety_systems");
 		super.onCreate(savedInstanceState);
         //setContentView(R.layout.mode_selector);
-		cameraView = (RosImageView<CompressedImage>) findViewById(R.id.image);
-        cameraView.setMessageType(sensor_msgs.CompressedImage._TYPE);
-        cameraView.setMessageToBitmapCallable(new BitmapFromCompressedImage());
         virtualJoystickView = (VirtualJoystickView) findViewById(R.id.virtual_joystick);
         backButton = (Button) findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -107,12 +103,9 @@ public class TeleoperationActivity extends RosAppActivity {
         camTopic = appNameSpace.resolve(camTopic).toString();
         stopTopic = appNameSpace.resolve(stopTopic).toString();
 
-		cameraView.setTopicName(camTopic);
         virtualJoystickView.setTopicName(joyTopic);
 
         estop = new EStopPublisher();
-		nodeMainExecutor.execute(cameraView, nodeConfiguration
-				.setNodeName("android/camera_view"));
 		nodeMainExecutor.execute(virtualJoystickView,
 				nodeConfiguration.setNodeName("android/virtual_joystick"));
 

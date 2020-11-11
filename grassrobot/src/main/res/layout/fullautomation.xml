@@ -35,12 +35,21 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="Full Automation Mode"
+            android:textSize="30sp" />
+
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
-            android:layout_height="242dp"
+            android:layout_height="173dp"
             android:onClick="pressEStop"
-            android:text="Emergency Stop" />
+            android:text="Emergency Stop"
+            android:textSize="24sp" />
 
         <org.ros.android.view.RosImageView
             android:id="@+id/image"

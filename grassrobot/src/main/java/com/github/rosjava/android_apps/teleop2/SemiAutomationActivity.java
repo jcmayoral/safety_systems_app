@@ -95,7 +95,7 @@ public class SemiAutomationActivity extends RosAppActivity {
         String camTopic = remaps.get(getString(R.string.camera_topic));
         String stopTopic = remaps.get("estop_topic");
 
-
+		setDefaultMasterName("semiautomation");
         NameResolver appNameSpace = getMasterNameSpace();
         joyTopic = appNameSpace.resolve(joyTopic).toString();
         camTopic = appNameSpace.resolve(camTopic).toString();
