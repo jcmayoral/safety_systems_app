@@ -17,7 +17,6 @@
 package com.github.rosjava.android_apps.teleop2;
 
 import android.graphics.Color;
-import android.nfc.tech.Ndef;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,44 +25,28 @@ import android.widget.Button;
 
 import com.github.rosjava.android_remocons.common_tools.apps.RosAppActivity;
 
-import org.apache.commons.logging.Log;
 import org.ros.android.BitmapFromCompressedImage;
-import org.ros.android.BitmapFromImage;
 import org.ros.android.view.RosImageView;
 import org.ros.android.view.VirtualJoystickView;
 
-import org.ros.concurrent.CancellableLoop;
-import org.ros.internal.message.RawMessage;
-import org.ros.message.MessageFactory;
-import org.ros.message.MessageSerializationFactory;
-import org.ros.namespace.GraphName;
 import org.ros.namespace.NameResolver;
-import org.ros.namespace.NodeNameResolver;
-import org.ros.node.ConnectedNode;
-import org.ros.node.Node;
 import org.ros.node.NodeConfiguration;
-import org.ros.node.NodeListener;
 import org.ros.node.NodeMainExecutor;
-import org.ros.node.topic.Publisher;
 
 import java.io.IOException;
-import java.net.URI;
-import java.util.concurrent.ScheduledExecutorService;
 
 import sensor_msgs.CompressedImage;
-import sensor_msgs.Image;
-import std_msgs.Bool;
 
 /**
  * @author murase@jsk.imi.i.u-tokyo.ac.jp (Kazuto Murase)
  */
-public class MainActivity extends RosAppActivity {
+public class TeleoperationActivity extends RosAppActivity {
 	private RosImageView<CompressedImage> cameraView;
 	private VirtualJoystickView virtualJoystickView;
 	private Button backButton;
 	EStopPublisher estop;
 
-	public MainActivity() {
+	public TeleoperationActivity() {
 		// The RosActivity constructor configures the notification title and ticker messages.
 		super("android teleop2", "android teleop2");
 	}
@@ -72,7 +55,7 @@ public class MainActivity extends RosAppActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setDashboardResource(R.id.top_bar);
-		setMainWindowResource(R.layout.main);
+		setMainWindowResource(R.layout.teleoperation);
 		super.onCreate(savedInstanceState);
 
         cameraView = (RosImageView<CompressedImage>) findViewById(R.id.image);

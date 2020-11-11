@@ -34,13 +34,13 @@ public class TabMainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_AppCompat_DayNight);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.mode_selector);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
-        TabLayout.Tab newTab = tabLayout.newTab();
-        newTab.setText("blabla");
-        newTab.setIcon(R.drawable.ic_amigos);
-        tabLayout.addTab(newTab,true);
+        //TabLayout.Tab newTab = tabLayout.newTab();
+        //newTab.setText("blabla");
+        //newTab.setIcon(R.drawable.ic_amigos);
+        //tabLayout.addTab(newTab,true);
         adapter = new TabAdapter(getSupportFragmentManager());
         adapter.addFragment(new Tab1Fragment(),"Tab 1");
         adapter.addFragment(new Tab2Fragment(),"Tab 2");
