@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.github.rosjava.android_remocons.common_tools.apps.RosAppActivity;
@@ -56,8 +57,10 @@ public class TeleoperationActivity extends RosAppActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		setDashboardResource(R.id.top_bar);
 		setMainWindowResource(R.layout.teleoperation);
+		//gma
+		// setDefaultAppName("Safety_systems");
 		super.onCreate(savedInstanceState);
-        //setContentView(R.layout.teleoperation);
+        //setContentView(R.layout.mode_selector);
 		cameraView = (RosImageView<CompressedImage>) findViewById(R.id.image);
         cameraView.setMessageType(sensor_msgs.CompressedImage._TYPE);
         cameraView.setMessageToBitmapCallable(new BitmapFromCompressedImage());
