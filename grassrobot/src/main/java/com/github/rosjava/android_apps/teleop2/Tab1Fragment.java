@@ -15,7 +15,7 @@ public class Tab1Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Intent intent = new Intent(getActivity(), TeleoperationActivity.class);
-        startActivity(intent);
+        getActivity().startActivity(intent);
         return inflater.inflate(R.layout.fragment_1, container, false);
     }
 }

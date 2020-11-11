@@ -28,6 +28,7 @@ import com.github.rosjava.android_remocons.common_tools.apps.RosAppActivity;
 import org.ros.android.BitmapFromCompressedImage;
 import org.ros.android.view.RosImageView;
 import org.ros.android.view.VirtualJoystickView;
+import android.util.Log;
 
 import org.ros.namespace.NameResolver;
 import org.ros.node.NodeConfiguration;
@@ -51,14 +52,13 @@ public class TeleoperationActivity extends RosAppActivity {
 		super("android teleop2", "android teleop2");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setDashboardResource(R.id.top_bar);
 		setMainWindowResource(R.layout.teleoperation);
 		super.onCreate(savedInstanceState);
-
-        cameraView = (RosImageView<CompressedImage>) findViewById(R.id.image);
+        //setContentView(R.layout.teleoperation);
+		cameraView = (RosImageView<CompressedImage>) findViewById(R.id.image);
         cameraView.setMessageType(sensor_msgs.CompressedImage._TYPE);
         cameraView.setMessageToBitmapCallable(new BitmapFromCompressedImage());
         virtualJoystickView = (VirtualJoystickView) findViewById(R.id.virtual_joystick);
@@ -85,7 +85,7 @@ public class TeleoperationActivity extends RosAppActivity {
 	protected void init(NodeMainExecutor nodeMainExecutor) {
 
 		super.init(nodeMainExecutor);
-
+		Log.v("Before try", "EFFFFFFFFFFFFFFFFFF");
         try {
             java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
             java.net.InetAddress local_network_address = socket.getLocalAddress();
@@ -99,7 +99,7 @@ public class TeleoperationActivity extends RosAppActivity {
         String stopTopic = remaps.get("estop_topic");
 
 
-			NameResolver appNameSpace = getMasterNameSpace();
+        NameResolver appNameSpace = getMasterNameSpace();
         joyTopic = appNameSpace.resolve(joyTopic).toString();
         camTopic = appNameSpace.resolve(camTopic).toString();
         stopTopic = appNameSpace.resolve(stopTopic).toString();
@@ -121,22 +121,4 @@ public class TeleoperationActivity extends RosAppActivity {
         }
 
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu){
-		  menu.add(0,0,0,R.string.stop_app);
-
-		  return super.onCreateOptionsMenu(menu);
-	  }
-	  
-	  @Override
-	  public boolean onOptionsItemSelected(MenuItem item){
-		  super.onOptionsItemSelected(item);
-		  switch (item.getItemId()){
-		  case 0:
-			  onDestroy();
-			  break;
-		  }
-		  return true;
-	  }
 }

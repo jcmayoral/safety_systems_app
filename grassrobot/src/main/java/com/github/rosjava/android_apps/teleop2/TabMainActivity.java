@@ -20,6 +20,8 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 /**
  * @author murase@jsk.imi.i.u-tokyo.ac.jp (Kazuto Murase)
@@ -41,11 +43,32 @@ public class TabMainActivity extends AppCompatActivity {
         //newTab.setText("blabla");
         //newTab.setIcon(R.drawable.ic_amigos);
         //tabLayout.addTab(newTab,true);
+
+
         adapter = new TabAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Tab1Fragment(),"Tab 1");
-        adapter.addFragment(new Tab2Fragment(),"Tab 2");
-        adapter.addFragment(new Tab3Fragment(),"Tab 3");
+        adapter.addFragment(new Tab1Fragment(),"Teleoperation");
+        adapter.addFragment(new Tab2Fragment(),"SemiAutonomous");
+        adapter.addFragment(new Tab3Fragment(),"FullAutomation");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        menu.add(0,0,0,R.string.stop_app);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()){
+            case 0:
+                onDestroy();
+                break;
+        }
+        return true;
     }
 }
