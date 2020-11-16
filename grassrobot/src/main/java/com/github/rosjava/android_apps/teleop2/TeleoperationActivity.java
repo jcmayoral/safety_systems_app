@@ -16,7 +16,12 @@
 
 package com.github.rosjava.android_apps.teleop2;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothHidDevice;
+import android.bluetooth.BluetoothProfile;
+import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +31,7 @@ import com.github.rosjava.android_remocons.common_tools.apps.RosAppActivity;
 import org.ros.android.view.VirtualJoystickView;
 import android.util.Log;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import org.ros.namespace.NameResolver;
 import org.ros.node.NodeConfiguration;
