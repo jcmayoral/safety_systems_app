@@ -18,18 +18,14 @@ package com.github.rosjava.android_apps.teleop2;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import com.github.rosjava.android_remocons.common_tools.apps.RosAppActivity;
 
-import org.ros.android.BitmapFromCompressedImage;
-import org.ros.android.view.RosImageView;
 import org.ros.android.view.VirtualJoystickView;
 import android.util.Log;
+import android.widget.Switch;
 
 import org.ros.namespace.NameResolver;
 import org.ros.node.NodeConfiguration;
@@ -46,6 +42,7 @@ public class TeleoperationActivity extends RosAppActivity {
 	private VirtualJoystickView virtualJoystickView;
 	private Button backButton;
 	static EStopPublisher estop;
+	static BluetoothTracker bluetoothtracker;
 
 	public TeleoperationActivity() {
 		// The RosActivity constructor configures the notification title and ticker messages.
@@ -56,7 +53,6 @@ public class TeleoperationActivity extends RosAppActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		setDashboardResource(R.id.top_bar);
 		setMainWindowResource(R.layout.teleoperation);
-		//gma
 		// setDefaultAppName("Safety_systems");
 		super.onCreate(savedInstanceState);
         //setContentView(R.layout.mode_selector);
@@ -78,6 +74,11 @@ public class TeleoperationActivity extends RosAppActivity {
 		else{
 			view.setBackgroundColor(Color.parseColor("#00FF00"));
 		}
+	}
+
+	public void bluetoothSwitch(View v){
+		Switch sw1 = (Switch)(v.findViewById(R.id.switch1));
+		bluetoothtracker.publish(sw1.isChecked());
 	}
 
 	@Override
@@ -106,10 +107,12 @@ public class TeleoperationActivity extends RosAppActivity {
         virtualJoystickView.setTopicName(joyTopic);
 
         estop = new EStopPublisher();
+        bluetoothtracker = new BluetoothTracker();
+
 		nodeMainExecutor.execute(virtualJoystickView,
 				nodeConfiguration.setNodeName("android/virtual_joystick"));
-
 		nodeMainExecutor.execute(estop, nodeConfiguration.setNodeName("android/estop"));
+		nodeMainExecutor.execute(bluetoothtracker, nodeConfiguration.setNodeName("android/ebluetooth"));
 
 
 		} catch (IOException e) {
