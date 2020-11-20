@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothHidDevice;
 import android.bluetooth.BluetoothProfile;
+import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.Build;
@@ -18,10 +19,14 @@ import org.ros.node.Node;
 import org.ros.node.topic.Publisher;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
 import std_msgs.Bool;
+
+import static java.lang.Thread.sleep;
 
 
 public class BluetoothTracker extends AbstractNodeMain {
@@ -33,10 +38,10 @@ public class BluetoothTracker extends AbstractNodeMain {
     BluetoothAdapter bluetoothAdapter;
     BluetoothDevice device;
     BluetoothSocket socket;
+    //BluetoothServerSocket serversocket;
     private BluetoothProfile.ServiceListener profileListener;
-
-    public BluetoothTracker() {
-    }
+    private OutputStream outStream;
+    private InputStream inStream;
 
 
     @Override
@@ -47,55 +52,103 @@ public class BluetoothTracker extends AbstractNodeMain {
         publisher = connectedNode.newPublisher("/bluetooth", Bool._TYPE);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
+        if(bluetoothAdapter == null){
+            //Does not support bluetooth
+            Log.e("ABORT", "bluetooth not supported");
+            return;
+        }
+
         if(bluetoothAdapter.isEnabled()){
             Set<BluetoothDevice> boundDevices = bluetoothAdapter.getBondedDevices();
+            Log.e("ABORT", "bluetooth not supported");
+
             if (boundDevices.size()>0){
                 Object[] devices = (Object[]) boundDevices.toArray();
 
-                String reference = "00001200-0000-1000-8000-00805f9b34fb";
+                String reference = "0000112f-0000-1000-8000-00805f9b34fb";
+
                 int hack = 0;
+                int uhack = 0;
+
                 for (int i = 0; i < devices.length; i++) {
                     device = (BluetoothDevice) devices[i];
-                    Log.e("errocisiisisismo ", "Device " + device.getName());
-                    Log.w("errocisiisisismo ", "Address " + device.getAddress());
+                    Log.i("DeviceID ", "Device " + device.getName());
+                    Log.i("AddressID ", "Address " + device.getAddress());
                     ParcelUuid[] a = device.getUuids();
                     if (a!= null) {
                         for (int j = 0; j < a.length; j++) {
-                            Log.w("errocisiisisismo ", "uuids  " + a[j]);
-                            if (a[j].equals(reference)){
-                                Log.e("reference found", "device " + device.getName());
+                            Log.w("errocisiisisismo ", "uuids:" + a[j]);
+
+
+                            if (a[j].getUuid().toString().equals(reference)){
+                                Log.e("device found", "device " + device.getName());
+                                Log.e("uuid found", "uuid " + a[j]);
                                 hack = i;
+                                uhack = j;
                             }
                         }
                     }
                 }
+
                 device = (BluetoothDevice) devices[hack];
+                Log.e("reference found", " on device " + device.getName());
 
                 ParcelUuid[]uuids = device.getUuids();
-                try {
-                    socket = device.createInsecureRfcommSocketToServiceRecord(uuids[0].getUuid());
-                    socket.connect();
+                Log.e("reference found", " on uuid " + uuids[uhack].getUuid());
 
-                } catch (IOException e) {
-                    Log.e("errocisiisisismo ", "ERROR AQUI");
-                    e.printStackTrace();
+                ///try {
+                    //socket = device.createInsecureRfcommSocketToServiceRecord(uuids[uhack].getUuid());
+                    //socket = device.createRfcommSocketToServiceRecord(uuids[uhack].getUuid());
+                    //socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001200-0000-1000-8000-00805f9b34fb"));
+
+                    //socket.connect();
+                for (int j = 0; j < uuids.length; j++) {
+                    Log.w("this ", "uuids:" + uuids[j]);
+
+                    try {
+                        //The string is an identifiable name of your service, which the system automatically writes to a new Service Discovery Protocol (SDP) database entry on the device.
+                        ParcelUuid SERVER = ParcelUuid.fromString("00001200-0000-1000-8000-00805f9b34fb");
+                        //socket = device.createInsecureRfcommSocketToServiceRecord(SERVER.getUuid());
+                        socket = device.createInsecureRfcommSocketToServiceRecord(uuids[j].getUuid());
+
+                        //socket = device.createRfcommSocketToServiceRecord(uuids[0].getUuid());
+                        //socket = device.createInsecureRfcommSocketToServiceRecord()
+                        //serversocket = bluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord("TEST", uuids[uhack].getUuid());
+                        Log.e("working", "This somehow is done");
+                        Log.e("working -->", uuids[j].toString());
+
+                    } catch (IOException e) {
+                        Log.e("error", e.getMessage());
+                        e.printStackTrace();
+                    }
+
+                    try{
+                        socket.connect();
+                        inStream = socket.getInputStream();
+                        outStream = socket.getOutputStream();
+                        outStream.write("FUnciona".getBytes());
+                        sleep(1000);
+                        Log.e("working2", "This somehow is done");
+                        Log.e("working2 -->", uuids[j].toString());
+                    } catch (IOException | InterruptedException e) {
+                        Log.e("error", e.getMessage());
+                        e.printStackTrace();
+                    }
+
+
                 }
-                Log.e("errocisiisisismo ", "No devices apropiados");
+
+                //} catch (IOException e) {
+                  //  Log.e("errocisiisisismo ", "ERROR >>>>> " + e.getMessage());
+                   // e.printStackTrace();
+                //}
             }
             else {
                 Log.e("errocisiisisismo ", "Bluetooth deshabilitado");
             }
         }
-        try {
-            device.createRfcommSocketToServiceRecord(UUID.fromString("00001200-0000-1000-8000-00805f9b34fb"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        if(bluetoothAdapter == null){
-            //Does not support bluetooth
-        }
-
+        /*
         profileListener = new BluetoothProfile.ServiceListener() {
             @Override
             public void onServiceConnected(int profile, BluetoothProfile proxy) {
@@ -103,6 +156,7 @@ public class BluetoothTracker extends AbstractNodeMain {
                 //CharSequence text = "In Callback";
                 //Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
                 //toast.show();
+                Log.w("ON servoce Listene", "PROFILE : " + String.valueOf(profile));
                 if(profile == BluetoothProfile.HID_DEVICE){
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         //device = (BluetoothDevice) proxy;
@@ -120,6 +174,8 @@ public class BluetoothTracker extends AbstractNodeMain {
                 }
             }
         };
+
+         */
     }
 
     public void publish(boolean command){
@@ -139,5 +195,10 @@ public class BluetoothTracker extends AbstractNodeMain {
         publisher.shutdown();
         node.removeListeners();
         node.shutdown();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
