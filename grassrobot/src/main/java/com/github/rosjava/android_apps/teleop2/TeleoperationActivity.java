@@ -28,6 +28,14 @@ import android.widget.Button;
 
 import com.github.rosjava.android_remocons.common_tools.apps.RosAppActivity;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.internal.wire.MqttOutputStream;
 import org.ros.android.view.VirtualJoystickView;
 import android.util.Log;
 import android.widget.Switch;
@@ -49,6 +57,7 @@ public class TeleoperationActivity extends RosAppActivity {
 	private Button backButton;
 	static EStopPublisher estop;
 	static BluetoothTracker bluetoothtracker;
+	private MyMqttClient myMqttClient;
 
 	public TeleoperationActivity() {
 		// The RosActivity constructor configures the notification title and ticker messages.
@@ -120,10 +129,12 @@ public class TeleoperationActivity extends RosAppActivity {
 		nodeMainExecutor.execute(estop, nodeConfiguration.setNodeName("android/estop"));
 		nodeMainExecutor.execute(bluetoothtracker, nodeConfiguration.setNodeName("android/ebluetooth"));
 
-
 		} catch (IOException e) {
             // Socket problem
         }
+		myMqttClient = new MyMqttClient();
+		myMqttClient.run(getApplicationContext());
+
 
 	}
 }
