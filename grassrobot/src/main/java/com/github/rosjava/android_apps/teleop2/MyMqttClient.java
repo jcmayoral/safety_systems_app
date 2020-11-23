@@ -16,13 +16,44 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.internal.wire.MqttOutputStream;
 
+import java.io.UnsupportedEncodingException;
+
 public class MyMqttClient extends Application {
     String clientId;
     MqttAndroidClient mqttAndroidClient;
     MqttConnectOptions mqttConnectOptions;
 
-    void MyMqttClient() {
+    public void publishString(){
+        String topic = "grass/commands";
+        String payload = "the payload";
+        byte[] encodedPayload = new byte[0];
+        try {
+            MqttMessage message = new MqttMessage();
+            //message.setRetained(true);
+            message.setPayload(payload.getBytes());
+            mqttAndroidClient.publish(topic, message);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+        //mqttAndroidClient.pu.publish("grass/test2", payload=random.normalvariate(30, 0.5), qos=0)
     }
+
+    public void publishBoolean(){
+        String topic = "grass/estop";
+        String payload = "the payload";
+        Boolean msg = true;
+        byte[] encodedPayload = new byte[0];
+        try {
+            MqttMessage message = new MqttMessage();
+            //message.setRetained(true);
+            message.setPayload(msg.toString().getBytes());
+            mqttAndroidClient.publish(topic, message);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+        //mqttAndroidClient.pu.publish("grass/test2", payload=random.normalvariate(30, 0.5), qos=0)
+    }
+
     public void subscribeTopic(String topic) {
         try {
             mqttAndroidClient.subscribe(topic, 0, null, new IMqttActionListener() {

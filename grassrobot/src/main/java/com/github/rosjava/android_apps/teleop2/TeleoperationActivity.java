@@ -83,6 +83,8 @@ public class TeleoperationActivity extends RosAppActivity {
 
 	public void pressEStop(View view){
 		estop.publish();
+		myMqttClient.publishString();
+		myMqttClient.publishBoolean();
 		if(estop.getState()) {
 			view.setBackgroundColor(Color.parseColor("#FF0000"));
 		}
