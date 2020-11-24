@@ -15,6 +15,8 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.internal.wire.MqttOutputStream;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
@@ -42,13 +44,20 @@ public class MyMqttClient extends Application {
         String topic = "grass/estop";
         String payload = "the payload";
         Boolean msg = true;
+        double number = 10.0;
+        JSONObject jsonmessage = new JSONObject();
+        JSONObject jsonvalues = new JSONObject();
+
         byte[] encodedPayload = new byte[0];
         try {
+            jsonmessage.put("type", "Estop");
+            jsonvalues.put("boolean",msg);
+            jsonvalues.put("double", number);
+            jsonmessage.put("commands", jsonvalues);
             MqttMessage message = new MqttMessage();
-            //message.setRetained(true);
-            message.setPayload(msg.toString().getBytes());
+            message.setPayload(jsonmessage.toString().getBytes());
             mqttAndroidClient.publish(topic, message);
-        } catch (MqttException e) {
+        } catch (MqttException | JSONException e) {
             e.printStackTrace();
         }
         //mqttAndroidClient.pu.publish("grass/test2", payload=random.normalvariate(30, 0.5), qos=0)
