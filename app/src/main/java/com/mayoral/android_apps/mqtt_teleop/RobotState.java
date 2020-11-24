@@ -1,4 +1,4 @@
-package com.github.rosjava.android_apps.teleop2;
+package com.mayoral.android_apps.mqtt_teleop;
 
 public class RobotState {
     static public boolean estop = false;

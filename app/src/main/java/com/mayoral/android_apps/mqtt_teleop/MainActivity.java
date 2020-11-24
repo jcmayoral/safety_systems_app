@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.github.rosjava.android_apps.teleop2;
+package com.mayoral.android_apps.mqtt_teleop;
 
 import android.app.Activity;
 import android.content.Intent;

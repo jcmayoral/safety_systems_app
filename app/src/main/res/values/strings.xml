@@ -2,9 +2,6 @@
 <resources>
     <string name="stop_app">Kill</string>
     <string name="app_name"> Safety Systems </string>
-    <string name="camera_topic">/camera/color/image_raw/compressed</string>
-    <string name="joystick_topic">cmd_vel</string>
-    <string name="estop_topic">emergency_stop</string>
     <string name="tabname1">Teleoperation</string>
     <string name="tabname2">Semi-Autonomous</string>
     <string name="tabname3">Full Automation</string>
