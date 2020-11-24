@@ -16,49 +16,40 @@
 
 package com.github.rosjava.android_apps.teleop2;
 
+import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.github.rosjava.android_remocons.common_tools.apps.RosAppActivity;
-
-import org.ros.android.BitmapFromCompressedImage;
 import org.ros.android.view.RosImageView;
-import org.ros.android.view.VirtualJoystickView;
-import org.ros.namespace.NameResolver;
-import org.ros.node.NodeConfiguration;
-import org.ros.node.NodeMainExecutor;
-
-import java.io.IOException;
 
 import sensor_msgs.CompressedImage;
 
 /**
  * @author murase@jsk.imi.i.u-tokyo.ac.jp (Kazuto Murase)
  */
-public class FullAutonomationActivity extends RosAppActivity {
+public class FullAutonomationActivity extends Activity {
 	private RosImageView<CompressedImage> cameraView;
 	private Button backButton;
-	static EStopPublisher estop;
+	MyMqttClient myMqttClient;
+	RobotState robot_state;
 
-	public FullAutonomationActivity() {
-		// The RosActivity constructor configures the notification title and ticker messages.
-		super("android teleop2", "android teleop2");
-	}
+	//static EStopPublisher estop;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setDashboardResource(R.id.top_bar);
-		setMainWindowResource(R.layout.fullautomation);
+		//setDashboardResource(R.id.top_bar);
+		//setMainWindowResource(R.layout.fullautomation);
 		//gma
 		// setDefaultAppName("Safety_systems");
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.fullautomation);
         //setContentView(R.layout.mode_selector);
-		cameraView = (RosImageView<CompressedImage>) findViewById(R.id.image);
-        cameraView.setMessageType(CompressedImage._TYPE);
-        cameraView.setMessageToBitmapCallable(new BitmapFromCompressedImage());
+		//cameraView = (RosImageView<CompressedImage>) findViewById(R.id.image);
+        //cameraView.setMessageType(CompressedImage._TYPE);
+        //cameraView.setMessageToBitmapCallable(new BitmapFromCompressedImage());
         backButton = (Button) findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,53 +57,33 @@ public class FullAutonomationActivity extends RosAppActivity {
                 onBackPressed();
             }
         });
+
+		myMqttClient = MainActivity.getMyMqttClient();
+		robot_state = MainActivity.getState();
+
+		Button button = (Button) findViewById(R.id.button);
+		button.setBackgroundColor(selectColor());
+
+	}
+
+	int selectColor(){
+		if (robot_state.estop){
+			return Color.parseColor("#00FF00");
+		}
+		return Color.parseColor("#FF0000");
 	}
 
 	public void pressEStop(View view){
-		estop.publish();
-		if(estop.getState()) {
-			view.setBackgroundColor(Color.parseColor("#FF0000"));
-		}
-		else{
-			view.setBackgroundColor(Color.parseColor("#00FF00"));
-		}
+		robot_state.estop = !robot_state.estop;
+		myMqttClient.publishEStop(robot_state.estop);
+		view.setBackgroundColor(selectColor());
 	}
+
 
 	@Override
-	protected void init(NodeMainExecutor nodeMainExecutor) {
-
-		super.init(nodeMainExecutor);
-		Log.v("Before try", "EFFFFFFFFFFFFFFFFFF");
-        try {
-            java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
-            java.net.InetAddress local_network_address = socket.getLocalAddress();
-            socket.close();
-            NodeConfiguration nodeConfiguration =
-                    NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
-
-
-		String joyTopic = remaps.get(getString(R.string.joystick_topic));
-        String camTopic = remaps.get(getString(R.string.camera_topic));
-        String stopTopic = remaps.get("estop_topic");
-
-
-        NameResolver appNameSpace = getMasterNameSpace();
-        joyTopic = appNameSpace.resolve(joyTopic).toString();
-        camTopic = appNameSpace.resolve(camTopic).toString();
-        stopTopic = appNameSpace.resolve(stopTopic).toString();
-
-		cameraView.setTopicName(camTopic);
-
-        estop = new EStopPublisher();
-		nodeMainExecutor.execute(cameraView, nodeConfiguration
-				.setNodeName("android/camera_view"));
-
-		nodeMainExecutor.execute(estop, nodeConfiguration.setNodeName("android/estop"));
-
-
-		} catch (IOException e) {
-            // Socket problem
-        }
-
+	protected void onDestroy() {
+		super.onDestroy();
+		MainActivity.setState(robot_state);
 	}
+
 }

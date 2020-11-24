@@ -46,14 +46,14 @@
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
-            android:layout_height="242dp"
+            android:layout_height="136dp"
             android:onClick="pressEStop"
             android:text="Emergency Stop" />
 
         <org.ros.android.view.RosImageView
             android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="283dp"
+            android:layout_height="328dp"
             android:layout_weight=".5"
             android:src="@mipmap/icon"
             android:visibility="visible"

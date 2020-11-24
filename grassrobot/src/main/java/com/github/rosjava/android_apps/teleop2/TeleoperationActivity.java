@@ -16,30 +16,20 @@
 
 package com.github.rosjava.android_apps.teleop2;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothHidDevice;
-import android.bluetooth.BluetoothProfile;
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 import com.github.rosjava.android_remocons.common_tools.apps.RosAppActivity;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.internal.wire.MqttOutputStream;
+import org.ros.android.RosActivity;
 import org.ros.android.view.VirtualJoystickView;
 import android.util.Log;
 import android.widget.Switch;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import org.ros.namespace.NameResolver;
 import org.ros.node.NodeConfiguration;
@@ -47,31 +37,50 @@ import org.ros.node.NodeMainExecutor;
 
 import java.io.IOException;
 
-import sensor_msgs.CompressedImage;
+import io.github.controlwear.virtual.joystick.android.JoystickView;
 
-/**
- * @author murase@jsk.imi.i.u-tokyo.ac.jp (Kazuto Murase)
- */
-public class TeleoperationActivity extends RosAppActivity {
+public class TeleoperationActivity extends Activity {
 	private VirtualJoystickView virtualJoystickView;
 	private Button backButton;
-	static EStopPublisher estop;
-	static BluetoothTracker bluetoothtracker;
-	private MyMqttClient myMqttClient;
+	//static EStopPublisher estop;
 
-	public TeleoperationActivity() {
-		// The RosActivity constructor configures the notification title and ticker messages.
-		super("android teleop2", "android teleop2");
-	}
+	private TextView angle_view;
+	private TextView strength_view;
+	private TextView coordinate_view;
+
+	JoystickView joystick;
+	//static BluetoothTracker bluetoothtracker;
+	MyMqttClient myMqttClient;
+	RobotState robot_state;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setDashboardResource(R.id.top_bar);
-		setMainWindowResource(R.layout.teleoperation);
+		//setDashboardResource(R.id.top_bar);
+		//setMainWindowResource(R.layout.teleoperation);
 		// setDefaultAppName("Safety_systems");
 		super.onCreate(savedInstanceState);
-        //setContentView(R.layout.mode_selector);
-        virtualJoystickView = (VirtualJoystickView) findViewById(R.id.virtual_joystick);
+		setContentView(R.layout.teleoperation);
+
+		angle_view = (TextView) findViewById(R.id.angle_view);
+		strength_view = (TextView) findViewById(R.id.strength_view);
+		coordinate_view = findViewById(R.id.coordinate_view);
+		joystick = (JoystickView) findViewById(R.id.mqtt_joystick);
+		joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
+			//@SuppressLint("DefaultLocale")
+			@Override
+			public void onMove(int angle, int strength) {
+				angle_view.setText(angle + "°");
+				strength_view.setText(strength + "%");
+				coordinate_view.setText(
+						String.format("x%03d:y%03d:d%03d",
+								joystick.getNormalizedX(),
+								joystick.getNormalizedY(),
+								joystick.getButtonDirection())
+				);
+			}
+		});
+
+		//virtualJoystickView = (VirtualJoystickView) findViewById(R.id.virtual_joystick);
         backButton = (Button) findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,64 +88,38 @@ public class TeleoperationActivity extends RosAppActivity {
                 onBackPressed();
             }
         });
+
+		myMqttClient = MainActivity.getMyMqttClient();
+		robot_state = MainActivity.getState();
+		Button button = (Button) findViewById(R.id.button);
+		button.setBackgroundColor(selectColor());
+
+
+	}
+
+	int selectColor(){
+		if (robot_state.estop){
+			return Color.parseColor("#00FF00");
+		}
+		return Color.parseColor("#FF0000");
 	}
 
 	public void pressEStop(View view){
-		estop.publish();
+		//estop.publish();
+		robot_state.estop = !robot_state.estop;
 		myMqttClient.publishString();
-		myMqttClient.publishBoolean();
-		if(estop.getState()) {
-			view.setBackgroundColor(Color.parseColor("#FF0000"));
-		}
-		else{
-			view.setBackgroundColor(Color.parseColor("#00FF00"));
-		}
+		myMqttClient.publishEStop(robot_state.estop);
+		view.setBackgroundColor(selectColor());
 	}
 
 	public void bluetoothSwitch(View v){
 		Switch sw1 = (Switch)(v.findViewById(R.id.switch1));
-		bluetoothtracker.publish(sw1.isChecked());
+		//bluetoothtracker.publish(sw1.isChecked());
 	}
 
 	@Override
-	protected void init(NodeMainExecutor nodeMainExecutor) {
-
-		super.init(nodeMainExecutor);
-		Log.v("Before try", "EFFFFFFFFFFFFFFFFFF");
-        try {
-            java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
-            java.net.InetAddress local_network_address = socket.getLocalAddress();
-            socket.close();
-            NodeConfiguration nodeConfiguration =
-                    NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
-
-
-		String joyTopic = remaps.get(getString(R.string.joystick_topic));
-        String camTopic = remaps.get(getString(R.string.camera_topic));
-        String stopTopic = remaps.get("estop_topic");
-
-
-        NameResolver appNameSpace = getMasterNameSpace();
-        joyTopic = appNameSpace.resolve(joyTopic).toString();
-        camTopic = appNameSpace.resolve(camTopic).toString();
-        stopTopic = appNameSpace.resolve(stopTopic).toString();
-
-        virtualJoystickView.setTopicName(joyTopic);
-
-        estop = new EStopPublisher();
-        bluetoothtracker = new BluetoothTracker();
-
-		nodeMainExecutor.execute(virtualJoystickView,
-				nodeConfiguration.setNodeName("android/virtual_joystick"));
-		nodeMainExecutor.execute(estop, nodeConfiguration.setNodeName("android/estop"));
-		nodeMainExecutor.execute(bluetoothtracker, nodeConfiguration.setNodeName("android/ebluetooth"));
-
-		} catch (IOException e) {
-            // Socket problem
-        }
-		myMqttClient = new MyMqttClient();
-		myMqttClient.run(getApplicationContext());
-
-
+	protected void onDestroy() {
+		super.onDestroy();
+		MainActivity.setState(robot_state);
 	}
 }

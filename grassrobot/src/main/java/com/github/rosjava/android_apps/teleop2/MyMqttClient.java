@@ -40,19 +40,18 @@ public class MyMqttClient extends Application {
         //mqttAndroidClient.pu.publish("grass/test2", payload=random.normalvariate(30, 0.5), qos=0)
     }
 
-    public void publishBoolean(){
+    public void publishEStop(boolean state){
         String topic = "grass/estop";
-        String payload = "the payload";
-        Boolean msg = true;
-        double number = 10.0;
+        //String payload = "the payload";
+        //double number = 10.0;
         JSONObject jsonmessage = new JSONObject();
         JSONObject jsonvalues = new JSONObject();
 
         byte[] encodedPayload = new byte[0];
         try {
             jsonmessage.put("type", "Estop");
-            jsonvalues.put("boolean",msg);
-            jsonvalues.put("double", number);
+            jsonvalues.put("boolean",state);
+            //jsonvalues.put("double", number);
             jsonmessage.put("commands", jsonvalues);
             MqttMessage message = new MqttMessage();
             message.setPayload(jsonmessage.toString().getBytes());
