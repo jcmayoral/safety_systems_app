@@ -16,21 +16,38 @@
 
 package com.github.rosjava.android_apps.teleop2;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-/**
- * @author murase@jsk.imi.i.u-tokyo.ac.jp (Kazuto Murase)
- */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
+
+    private static RobotState robot_state;
+    private static MyMqttClient myMqttClient;
+
+
+    public static RobotState getState(){
+        return robot_state;
+    }
+
+    public static MyMqttClient getMyMqttClient(){
+        return myMqttClient;
+    }
+
+    public static void setState(RobotState state){
+        robot_state = state;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_AppCompat_DayNight);
         setContentView(R.layout.mode_selector);
+        myMqttClient = new MyMqttClient();
+        myMqttClient.run(getApplicationContext());
+
     }
 
     public void teleOpMode(View view){
