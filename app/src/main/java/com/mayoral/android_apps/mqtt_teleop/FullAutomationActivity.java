@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class FullAutonomationActivity extends Activity {
+public class FullAutomationActivity extends Activity {
 
 	private Button backButton;
 	MyMqttClient myMqttClient;

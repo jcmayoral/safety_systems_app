@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
     }
 
     public void fullAutomationMode(View view){
-        Intent intent = new Intent(this, FullAutonomationActivity.class);
+        Intent intent = new Intent(this, FullAutomationActivity.class);
         startActivity(intent);
     }
 }
