@@ -36,44 +36,35 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="Teleoperation Mode"
+            android:text="Full Automation Mode"
             android:textSize="30sp" />
-
-        <Switch
-            android:id="@+id/switch1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="bluetoothSwitch"
-            android:text="Switch" />
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="10"
-            android:progress="3" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
-            android:layout_height="242dp"
+            android:layout_height="173dp"
             android:onClick="pressEStop"
-            android:text="Emergency Stop" />
+            android:text="Emergency Stop"
+            android:textSize="24sp" />
 
-        <org.ros.android.view.VirtualJoystickView
-            android:id="@+id/virtual_joystick"
+        <org.ros.android.view.RosImageView
+            android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="4"
-            android:adjustViewBounds="true">
+            android:layout_weight=".5"
+            android:src="@mipmap/icon"
+            android:visibility="visible"
+            tools:visibility="visible" />
 
-        </org.ros.android.view.VirtualJoystickView>
+        <Switch
+            android:id="@+id/switch2"
+            android:layout_width="match_parent"
+            android:layout_height="116dp"
+            android:text="Mode Activation" />
 
     </LinearLayout>
 
