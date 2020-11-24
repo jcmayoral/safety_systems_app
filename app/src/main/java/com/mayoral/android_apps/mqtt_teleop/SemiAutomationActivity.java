@@ -12,6 +12,8 @@ public class SemiAutomationActivity extends Activity {
 	//static EStopPublisher estop;
 	RobotState robot_state;
 	MyMqttClient myMqttClient;
+	static BluetoothTracker bluetoothtracker;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

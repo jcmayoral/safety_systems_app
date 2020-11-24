@@ -1,6 +1,7 @@
 package com.mayoral.android_apps.mqtt_teleop;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -17,8 +18,12 @@ public class TeleoperationActivity extends Activity {
 	private TextView angle_view;
 	private TextView strength_view;
 	private TextView coordinate_view;
+	private TextView rangle_view;
+	private TextView rstrength_view;
+	private TextView rcoordinate_view;
 
 	JoystickView joystick;
+	JoystickView rjoystick;
 	//static BluetoothTracker bluetoothtracker;
 	MyMqttClient myMqttClient;
 	RobotState robot_state;
@@ -30,6 +35,8 @@ public class TeleoperationActivity extends Activity {
 		// setDefaultAppName("Safety_systems");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.teleoperation);
+		//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
 
 		angle_view = (TextView) findViewById(R.id.angle_view);
 		strength_view = (TextView) findViewById(R.id.strength_view);
@@ -46,6 +53,25 @@ public class TeleoperationActivity extends Activity {
 								joystick.getNormalizedX(),
 								joystick.getNormalizedY(),
 								joystick.getButtonDirection())
+				);
+			}
+		});
+
+		rangle_view = (TextView) findViewById(R.id.angle_view2);
+		rstrength_view = (TextView) findViewById(R.id.strength_view2);
+		rcoordinate_view = findViewById(R.id.coordinate_view2);
+		rjoystick = (JoystickView) findViewById(R.id.mqtt_joystick2);
+		rjoystick.setOnMoveListener(new JoystickView.OnMoveListener() {
+			//@SuppressLint("DefaultLocale")
+			@Override
+			public void onMove(int angle, int strength) {
+				rangle_view.setText(angle + "°");
+				rstrength_view.setText(strength + "%");
+				rcoordinate_view.setText(
+						String.format("x%03d:y%03d:d%03d",
+								rjoystick.getNormalizedX(),
+								rjoystick.getNormalizedY(),
+								rjoystick.getButtonDirection())
 				);
 			}
 		});

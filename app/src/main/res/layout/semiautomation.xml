@@ -43,6 +43,21 @@
             android:text="Semi Automation Mode"
             android:textSize="30sp" />
 
+        <SeekBar
+            android:id="@+id/seekBar"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="3" />
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="bluetoothSwitch"
+            android:text="Switch" />
+
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
