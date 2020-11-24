@@ -19,28 +19,17 @@ package com.github.rosjava.android_apps.teleop2;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-
-import com.github.rosjava.android_remocons.common_tools.apps.RosAppActivity;
-
-import org.ros.android.RosActivity;
-import org.ros.android.view.VirtualJoystickView;
 import android.util.Log;
 import android.widget.Switch;
 import android.widget.TextView;
-
-import org.ros.namespace.NameResolver;
-import org.ros.node.NodeConfiguration;
-import org.ros.node.NodeMainExecutor;
 
 import java.io.IOException;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 public class TeleoperationActivity extends Activity {
-	private VirtualJoystickView virtualJoystickView;
 	private Button backButton;
 	//static EStopPublisher estop;
 

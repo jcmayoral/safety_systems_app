@@ -111,7 +111,6 @@ public class MyMqttClient extends Application {
         });
         Log.w("AQUI", "CCCCCCCCCCCCCCCCCC");
 
-        /* Establish an MQTT connection */
         try {
             mqttAndroidClient.connect(mqttConnectOptions, context, new IMqttActionListener() {
                 @Override
@@ -134,7 +133,6 @@ public class MyMqttClient extends Application {
             e.printStackTrace();
         }
         Log.w("AQUI", "BBBBBBBBBBBBBBBBBBBBBBBBbbfinishing");
-
 
     }
 }

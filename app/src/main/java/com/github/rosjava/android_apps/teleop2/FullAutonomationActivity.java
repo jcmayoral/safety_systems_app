@@ -18,38 +18,28 @@ package com.github.rosjava.android_apps.teleop2;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.github.rosjava.android_remocons.common_tools.apps.RosAppActivity;
+public class FullAutonomationActivity extends Activity {
 
-import org.ros.android.BitmapFromCompressedImage;
-import org.ros.android.view.RosImageView;
-import org.ros.android.view.VirtualJoystickView;
-import org.ros.namespace.NameResolver;
-import org.ros.node.NodeConfiguration;
-import org.ros.node.NodeMainExecutor;
-
-import java.io.IOException;
-
-import sensor_msgs.CompressedImage;
-
-/**
- * @author murase@jsk.imi.i.u-tokyo.ac.jp (Kazuto Murase)
- */
-public class SemiAutomationActivity extends Activity {
-	private RosImageView<CompressedImage> cameraView;
 	private Button backButton;
-	//static EStopPublisher estop;
-	RobotState robot_state;
 	MyMqttClient myMqttClient;
+	RobotState robot_state;
+
+	//static EStopPublisher estop;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		//setDashboardResource(R.id.top_bar);
+		//setMainWindowResource(R.layout.fullautomation);
+		//gma
+		// setDefaultAppName("Safety_systems");
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.semiautomation);
+		setContentView(R.layout.fullautomation);
+        //setContentView(R.layout.mode_selector);
 		//cameraView = (RosImageView<CompressedImage>) findViewById(R.id.image);
         //cameraView.setMessageType(CompressedImage._TYPE);
         //cameraView.setMessageToBitmapCallable(new BitmapFromCompressedImage());
@@ -63,15 +53,10 @@ public class SemiAutomationActivity extends Activity {
 
 		myMqttClient = MainActivity.getMyMqttClient();
 		robot_state = MainActivity.getState();
+
 		Button button = (Button) findViewById(R.id.button);
 		button.setBackgroundColor(selectColor());
-	}
 
-	public void pressEStop(View view) {
-		robot_state.estop = !robot_state.estop;
-		myMqttClient.publishString();
-		myMqttClient.publishEStop(robot_state.estop);
-		view.setBackgroundColor(selectColor());
 	}
 
 	int selectColor(){
@@ -80,4 +65,18 @@ public class SemiAutomationActivity extends Activity {
 		}
 		return Color.parseColor("#FF0000");
 	}
+
+	public void pressEStop(View view){
+		robot_state.estop = !robot_state.estop;
+		myMqttClient.publishEStop(robot_state.estop);
+		view.setBackgroundColor(selectColor());
+	}
+
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		MainActivity.setState(robot_state);
+	}
+
 }

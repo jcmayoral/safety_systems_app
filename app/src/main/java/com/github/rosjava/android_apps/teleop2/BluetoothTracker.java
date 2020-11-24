@@ -12,11 +12,6 @@ import android.os.ParcelUuid;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.ros.namespace.GraphName;
-import org.ros.node.AbstractNodeMain;
-import org.ros.node.ConnectedNode;
-import org.ros.node.Node;
-import org.ros.node.topic.Publisher;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,16 +19,14 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
-import std_msgs.Bool;
 
 import static java.lang.Thread.sleep;
 
 
-public class BluetoothTracker extends AbstractNodeMain {
+public class BluetoothTracker {
 
     public boolean isActive;
     public double threshold;
-    public Publisher<Bool> publisher;
     //public BluetoothHidDevice device;
     BluetoothAdapter bluetoothAdapter;
     BluetoothDevice device;
@@ -43,13 +36,10 @@ public class BluetoothTracker extends AbstractNodeMain {
     private OutputStream outStream;
     private InputStream inStream;
 
-
-    @Override
-    public void onStart(ConnectedNode connectedNode) {
+    public BluetoothTracker() {
         //super.onStart(connectedNode);
         isActive = false;
         threshold =  40.0;
-        publisher = connectedNode.newPublisher("/bluetooth", Bool._TYPE);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if(bluetoothAdapter == null){
@@ -176,29 +166,5 @@ public class BluetoothTracker extends AbstractNodeMain {
         };
 
          */
-    }
-
-    public void publish(boolean command){
-        isActive = command;
-        Bool msg = publisher.newMessage();
-        msg.setData(isActive);
-        publisher.publish(msg);
-    }
-
-    @Override
-    public GraphName getDefaultNodeName() {
-        return GraphName.of("grassrobotics_app/ebluetooth_publisher");
-    }
-
-    @Override
-    public void onShutdown(Node node) {
-        publisher.shutdown();
-        node.removeListeners();
-        node.shutdown();
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
