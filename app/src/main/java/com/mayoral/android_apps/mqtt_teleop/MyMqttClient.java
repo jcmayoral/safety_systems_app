@@ -81,14 +81,16 @@ public class MyMqttClient extends Application {
 
     public void run(Context context){
         clientId = MqttClient.generateClientId();
-        Log.w("AQUI", "AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         /* Create an MqttConnectOptions object and configure the username and password. */
         mqttConnectOptions = new MqttConnectOptions();
         //mqttConnectOptions.setUserName(userName);
         //mqttConnectOptions.setPassword(passWord.toCharArray());
-        Log.w("AQUI", "BBBBBBBBBBBBBBBBBBBBBBBBbb");
 
-        mqttAndroidClient = new MqttAndroidClient(context, "tcp://10.230.46.14:1883", clientId);
+        //ZOTAC
+        //mqttAndroidClient = new MqttAndroidClient(context, "tcp://10.230.46.14:1883", clientId);
+        //PERSONAL PC
+        mqttAndroidClient = new MqttAndroidClient(context, "tcp://10.230.41.2:1883", clientId);
+
         mqttAndroidClient.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
