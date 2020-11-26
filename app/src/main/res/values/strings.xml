@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="stop_app">Kill</string>
+    <string name="settings">Settings</string>
     <string name="app_name"> Safety Systems </string>
     <string name="tabname1">Teleoperation</string>
     <string name="tabname2">Semi-Autonomous</string>
     <string name="tabname3">Full Automation</string>
+    <string name="menuselection">Select the safe level for the robot</string>
+
 </resources>

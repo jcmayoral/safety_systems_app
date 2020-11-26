@@ -20,6 +20,13 @@ public class MyMqttClient extends Application {
     String clientId;
     MqttAndroidClient mqttAndroidClient;
     MqttConnectOptions mqttConnectOptions;
+    String chost = "10.0.0.24";
+    int cport = 1883;
+
+    String getHost(){ return  chost;};
+    int getPort(){ return cport;};
+    void setHost(String h){chost = h;};
+    void setPort(int p){cport =p;};
 
     public void publishString(){
         String topic = "grass/commands";
@@ -64,11 +71,13 @@ public class MyMqttClient extends Application {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.i("subscribed success", "subscribed succeed");
+                    connection_flag = true;
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Log.i("subscribed Failed", "subscribed failed");
+                    connection_flag = false;
                 }
             });
 
@@ -79,10 +88,13 @@ public class MyMqttClient extends Application {
         }
     }
 
-    public void run(Context context){
+    boolean connection_flag = false;
+
+    public boolean run(Context context, String ipAddress, int port){
         clientId = MqttClient.generateClientId();
         /* Create an MqttConnectOptions object and configure the username and password. */
         mqttConnectOptions = new MqttConnectOptions();
+        mqttConnectOptions.setAutomaticReconnect(true);
         //mqttConnectOptions.setUserName(userName);
         //mqttConnectOptions.setPassword(passWord.toCharArray());
 
@@ -91,48 +103,59 @@ public class MyMqttClient extends Application {
         //PERSONAL PC
         //mqttAndroidClient = new MqttAndroidClient(context, "tcp://10.230.41.2:1883", clientId);
         //Brekkeveien
-        mqttAndroidClient = new MqttAndroidClient(context, "tcp://10.0.0.24:1883", clientId);
+        String serveruri = "tcp://" + ipAddress+":"+String.valueOf(port);
+
+        mqttAndroidClient = new MqttAndroidClient(context, serveruri, clientId);
 
         mqttAndroidClient.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
                 Log.i("Connected", "connection lost");
+                connection_flag = false;
             }
 
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
                 Log.i("message arrived", "topic: " + topic + ", msg: " + new String(message.getPayload()));
+                connection_flag = true;
             }
 
             @Override
             public void deliveryComplete(IMqttDeliveryToken token) {
                 Log.i("delivered", "msg delivered");
+                connection_flag = false;
             }
         });
-        Log.w("AQUI", "CCCCCCCCCCCCCCCCCC");
 
+        Log.w("Mqtt", "before connected");
         try {
+            Log.e("Mqtt", "before connectinhg");
             mqttAndroidClient.connect(mqttConnectOptions, context, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+                    Log.e("Mqtt", "before connected");
                     Log.w("connected succeed", "connect succeed");
-
-                    subscribeTopic("grass/test");
+                    //subscribeTopic("grass/test");
+                    connection_flag = true;
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Log.e("Mqtt", "error connecting");
                     Log.w("connected failed", "connect failed");
                     Log.w("Connected failed", exception.getMessage());
+                    connection_flag = false;
                 }
             });
 
         } catch (MqttException e) {
-            Log.w("AQUI", "eeedddddddddddddddddd");
-
             e.printStackTrace();
         }
-        Log.w("AQUI", "BBBBBBBBBBBBBBBBBBBBBBBBbbfinishing");
 
+        if (connection_flag){
+            chost = ipAddress;
+            cport = port;
+        }
+        return connection_flag;
     }
 }

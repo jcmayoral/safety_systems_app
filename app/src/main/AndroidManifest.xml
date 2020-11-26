@@ -34,6 +34,10 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name="com.mayoral.android_apps.mqtt_teleop.SettingsActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
 
         <activity android:name="com.mayoral.android_apps.mqtt_teleop.MainActivity"
             android:label="@string/app_name"
@@ -43,10 +47,10 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
+            <!--intent-filter>
                 <action android:name="com.github.rosjava.android_apps.teleop2.TabMainActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+            </intent-filter-->
         </activity>
     </application>
 </manifest>

@@ -19,10 +19,7 @@ public class SemiAutomationActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.semiautomation);
-		//cameraView = (RosImageView<CompressedImage>) findViewById(R.id.image);
-        //cameraView.setMessageType(CompressedImage._TYPE);
-        //cameraView.setMessageToBitmapCallable(new BitmapFromCompressedImage());
-        backButton = (Button) findViewById(R.id.back_button);
+	   	backButton = (Button) findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

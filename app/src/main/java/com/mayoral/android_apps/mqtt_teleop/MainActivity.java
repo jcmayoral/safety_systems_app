@@ -20,9 +20,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
-
+    private Button settingsButton;
     private static RobotState robot_state;
     private static MyMqttClient myMqttClient;
 
@@ -35,10 +36,16 @@ public class MainActivity extends Activity {
         return myMqttClient;
     }
 
+    public static void setMyMqttClient(MyMqttClient mqttclient){ myMqttClient = mqttclient;}
+
     public static void setState(RobotState state){
         robot_state = state;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,9 +53,24 @@ public class MainActivity extends Activity {
         setTheme(R.style.Theme_AppCompat_DayNight);
         setContentView(R.layout.mode_selector);
         myMqttClient = new MyMqttClient();
-        myMqttClient.run(getApplicationContext());
+        //myMqttClient.run(getApplicationContext());
+
+        settingsButton = (Button) findViewById(R.id.settings_button);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = settingsApp(view);
+                startActivity(intent);
+            }
+        });
 
     }
+
+    public Intent settingsApp(View view){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        return intent;
+    }
+
 
     public void teleOpMode(View view){
         Intent intent = new Intent(this, TeleoperationActivity.class);
