@@ -89,7 +89,9 @@ public class MyMqttClient extends Application {
         //ZOTAC
         //mqttAndroidClient = new MqttAndroidClient(context, "tcp://10.230.46.14:1883", clientId);
         //PERSONAL PC
-        mqttAndroidClient = new MqttAndroidClient(context, "tcp://10.230.41.2:1883", clientId);
+        //mqttAndroidClient = new MqttAndroidClient(context, "tcp://10.230.41.2:1883", clientId);
+        //Brekkeveien
+        mqttAndroidClient = new MqttAndroidClient(context, "tcp://10.0.0.24:1883", clientId);
 
         mqttAndroidClient.setCallback(new MqttCallback() {
             @Override
