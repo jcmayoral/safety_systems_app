@@ -86,7 +86,8 @@
                 android:id="@+id/togglebutton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textOff="Connection off"
+                android:textOff="Connection Status"
+                android:clickable="false"
                 android:textOn="Connection on" />
         </TableRow>
 

@@ -16,16 +16,8 @@ public class FullAutomationActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		//setDashboardResource(R.id.top_bar);
-		//setMainWindowResource(R.layout.fullautomation);
-		//gma
-		// setDefaultAppName("Safety_systems");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fullautomation);
-        //setContentView(R.layout.mode_selector);
-		//cameraView = (RosImageView<CompressedImage>) findViewById(R.id.image);
-        //cameraView.setMessageType(CompressedImage._TYPE);
-        //cameraView.setMessageToBitmapCallable(new BitmapFromCompressedImage());
         backButton = (Button) findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +31,7 @@ public class FullAutomationActivity extends Activity {
 
 		Button button = (Button) findViewById(R.id.button);
 		button.setBackgroundColor(selectColor());
-
+		myMqttClient.publishCommand("XMode", "START", "FullAutonomous");
 	}
 
 	int selectColor(){
@@ -50,6 +42,9 @@ public class FullAutomationActivity extends Activity {
 	}
 
 	public void pressEStop(View view){
+		if (!myMqttClient.isConnectionDone()){
+			return;
+		}
 		robot_state.estop = !robot_state.estop;
 		myMqttClient.publishEStop(robot_state.estop);
 		view.setBackgroundColor(selectColor());
@@ -59,6 +54,8 @@ public class FullAutomationActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		MainActivity.setState(robot_state);
+		myMqttClient.publishCommand("XMode", "STOP", "FullAutonomous");
+
 	}
 
 }

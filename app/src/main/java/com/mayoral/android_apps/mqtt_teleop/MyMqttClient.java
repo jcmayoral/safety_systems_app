@@ -1,6 +1,5 @@
 package com.mayoral.android_apps.mqtt_teleop;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
@@ -16,12 +15,13 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MyMqttClient extends Application {
+public class MyMqttClient {
     String clientId;
     MqttAndroidClient mqttAndroidClient;
     MqttConnectOptions mqttConnectOptions;
     String chost = "10.0.0.24";
     int cport = 1883;
+    boolean connection_flag = false;
 
     String getHost(){ return  chost;};
     int getPort(){ return cport;};
@@ -29,6 +29,9 @@ public class MyMqttClient extends Application {
     void setPort(int p){cport =p;};
 
     public void publishString(){
+        if (!connection_flag){
+            return;
+        }
         String topic = "grass/commands";
         String payload = "the payload";
         byte[] encodedPayload = new byte[0];
@@ -43,7 +46,36 @@ public class MyMqttClient extends Application {
         //mqttAndroidClient.pu.publish("grass/test2", payload=random.normalvariate(30, 0.5), qos=0)
     }
 
+    public void publishCommand(String type, String command_id, String command){
+        if (!connection_flag){
+            return;
+        }
+        String topic = "grass/estop";
+        //String payload = "the payload";
+        //double number = 10.0;
+        JSONObject jsonmessage = new JSONObject();
+        JSONObject jsonvalues = new JSONObject();
+
+        byte[] encodedPayload = new byte[0];
+        try {
+            jsonmessage.put("type", type);
+            jsonvalues.put(command_id, command);
+            //jsonvalues.put("double", number);
+            jsonmessage.put("commands", jsonvalues);
+            MqttMessage message = new MqttMessage();
+            message.setPayload(jsonmessage.toString().getBytes());
+            mqttAndroidClient.publish(topic, message);
+        } catch (MqttException | JSONException e) {
+            e.printStackTrace();
+        }
+        //mqttAndroidClient.pu.publish("grass/test2", payload=random.normalvariate(30, 0.5), qos=0)
+    }
+
+
     public void publishEStop(boolean state){
+        if (!connection_flag){
+            return;
+        }
         String topic = "grass/estop";
         //String payload = "the payload";
         //double number = 10.0;
@@ -88,7 +120,9 @@ public class MyMqttClient extends Application {
         }
     }
 
-    boolean connection_flag = false;
+    boolean isConnectionDone(){
+        return connection_flag;
+    }
 
     public boolean run(Context context, String ipAddress, int port){
         clientId = MqttClient.generateClientId();
@@ -123,7 +157,7 @@ public class MyMqttClient extends Application {
             @Override
             public void deliveryComplete(IMqttDeliveryToken token) {
                 Log.i("delivered", "msg delivered");
-                connection_flag = false;
+                connection_flag = true;
             }
         });
 

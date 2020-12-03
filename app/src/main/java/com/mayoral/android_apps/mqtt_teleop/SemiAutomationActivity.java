@@ -29,11 +29,16 @@ public class SemiAutomationActivity extends Activity {
 
 		myMqttClient = MainActivity.getMyMqttClient();
 		robot_state = MainActivity.getState();
+		myMqttClient.publishCommand("XMode", "START", "SemiAutonomous");
+
 		Button button = (Button) findViewById(R.id.button);
 		button.setBackgroundColor(selectColor());
 	}
 
 	public void pressEStop(View view) {
+		if (!myMqttClient.isConnectionDone()){
+			return;
+		}
 		robot_state.estop = !robot_state.estop;
 		myMqttClient.publishString();
 		myMqttClient.publishEStop(robot_state.estop);
@@ -51,5 +56,6 @@ public class SemiAutomationActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		MainActivity.setState(robot_state);
+		myMqttClient.publishCommand("XMode", "STOP", "SemiAutonomous");
 	}
 }
