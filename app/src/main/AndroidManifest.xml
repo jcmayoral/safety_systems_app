@@ -18,11 +18,11 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         tools:replace="icon, label">
+
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
         <activity
             android:name=".BagSelection"
             android:label="@string/title_activity_bag_selection"></activity>
-
-        <service android:name="org.eclipse.paho.android.service.MqttService" />
         <activity
             android:name=".TeleoperationActivity"
             android:label="@string/app_name"

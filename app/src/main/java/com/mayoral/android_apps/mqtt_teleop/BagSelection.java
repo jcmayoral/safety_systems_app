@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 
 public class BagSelection extends AppCompatActivity {
@@ -22,6 +23,7 @@ public class BagSelection extends AppCompatActivity {
         //CollapsingToolbarLayout toolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         //toolBarLayout.setTitle(getTitle());
 
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,5 +33,14 @@ public class BagSelection extends AppCompatActivity {
 
             }
         });
+        */
     }
+
+    public void onConfigureClick(View view) {
+       // boolean result = myMqttClient.run(getApplicationContext(), ipAddress, port);
+        //Log.e("settings", String.valueOf(result));
+        //int val = result? 1 : 0;
+        //ConnStatusButton.setBackgroundColor(selectColor(val));
+    }
+
 }
