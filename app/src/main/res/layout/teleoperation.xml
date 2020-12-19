@@ -36,6 +36,7 @@
             android:text="Emergency Stop"
             tools:layout_conversion_absoluteHeight="194dp"
             tools:layout_conversion_absoluteWidth="87dp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -44,6 +45,11 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
+
+        <include
+            layout="@layout/bag_selection_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
