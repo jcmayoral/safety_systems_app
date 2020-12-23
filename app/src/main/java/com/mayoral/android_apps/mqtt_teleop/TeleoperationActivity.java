@@ -1,9 +1,11 @@
 package com.mayoral.android_apps.mqtt_teleop;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
@@ -14,6 +16,7 @@ import io.github.controlwear.virtual.joystick.android.JoystickView;
 public class TeleoperationActivity extends Activity {
 	private Button backButton;
 	//static EStopPublisher estop;
+	Button configButton;
 
 	private TextView angle_view;
 	private TextView strength_view;
@@ -30,9 +33,6 @@ public class TeleoperationActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		//setDashboardResource(R.id.top_bar);
-		//setMainWindowResource(R.layout.teleoperation);
-		// setDefaultAppName("Safety_systems");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.teleoperation);
 		//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -93,7 +93,6 @@ public class TeleoperationActivity extends Activity {
 			}
 		});
 
-		//virtualJoystickView = (VirtualJoystickView) findViewById(R.id.virtual_joystick);
         backButton = (Button) findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +107,17 @@ public class TeleoperationActivity extends Activity {
 		button.setBackgroundColor(selectColor());
 
 		myMqttClient.publishCommand("XMode", "START", "Teleoperation");
+
+		configButton = (Button) findViewById(R.id.config_recording);
+		configButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(getApplicationContext(), BagSelector.class);
+				startActivity(intent);
+			}
+		});
+		Log.e("OOOO", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
 
 	}
 

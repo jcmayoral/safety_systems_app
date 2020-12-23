@@ -8,8 +8,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
@@ -21,23 +19,23 @@
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
         <activity
-            android:name=".BagSelection"
+            android:name=".BagSelector"
             android:label="@string/title_activity_bag_selection"></activity>
         <activity
             android:name=".TeleoperationActivity"
-            android:label="@string/app_name"
+            android:label="@string/tabname1"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SemiAutomationActivity"
-            android:label="@string/app_name"
+            android:label="@string/tabname2"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".FullAutomationActivity"
-            android:label="@string/app_name"
+            android:label="@string/tabname3"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/app_name"
+            android:label="Settings"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".MainActivity"
@@ -46,15 +44,8 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!--
-            intent-filter>
-                <action android:name="com.github.rosjava.android_apps.teleop2.TabMainActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter
-            -->
         </activity>
     </application>
 

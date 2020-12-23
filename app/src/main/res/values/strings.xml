@@ -7,7 +7,8 @@
     <string name="tabname2">Semi-Autonomous</string>
     <string name="tabname3">Full Automation</string>
     <string name="menuselection">Select the safe level for the robot</string>
-    <string name="title_activity_bag_selection">ScrollingActivity</string>
+    <string name="title_activity_bag_configure">Bag Configure</string>
+    <string name="title_activity_bag_selection">Bag Selector</string>
     <string name="action_settings">Settings</string>
 
 </resources>
