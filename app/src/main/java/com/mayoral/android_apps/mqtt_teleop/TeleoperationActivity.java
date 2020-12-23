@@ -147,6 +147,11 @@ public class TeleoperationActivity extends Activity {
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		MainActivity.setState(robot_state);
