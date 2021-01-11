@@ -23,11 +23,17 @@ public class BagSelector extends Activity {
             "Action", "Adventure", "Animation", "Children", "Comedy", "Documentary", "Drama",
             "Foreign", "History", "Independent", "Romance", "Sci-Fi", "Television", "Thriller", "BLABLA"
     };
+
+    MyMqttClient myMqttClient;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.topics_selection);
         listView =(ListView)findViewById(R.id.list);
+
+        myMqttClient = MainActivity.getMyMqttClient();
+
 
         /*
         backButton = (Button) findViewById(R.id.back_button);

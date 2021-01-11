@@ -32,7 +32,7 @@ public class MyMqttClient {
         if (!connection_flag){
             return;
         }
-        String topic = "grass/commands";
+        String topic = "grass/safety";
         String payload = "the payload";
         byte[] encodedPayload = new byte[0];
         try {
@@ -50,7 +50,7 @@ public class MyMqttClient {
         if (!connection_flag){
             return;
         }
-        String topic = "grass/estop";
+        String topic = "grass/safety";
         //String payload = "the payload";
         //double number = 10.0;
         JSONObject jsonmessage = new JSONObject();
@@ -76,7 +76,7 @@ public class MyMqttClient {
         if (!connection_flag){
             return;
         }
-        String topic = "grass/estop";
+        String topic = "grass/safety";
         //String payload = "the payload";
         //double number = 10.0;
         JSONObject jsonmessage = new JSONObject();
@@ -173,8 +173,7 @@ public class MyMqttClient {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.e("Mqtt", "before connected");
                     Log.w("connected succeed", "connect succeed");
-                    subscribetoTopic("grass/test", null);
-                    connection_flag = true;
+                    subscribetoTopic("grass/safety" , null);
                 }
 
                 @Override
@@ -182,7 +181,6 @@ public class MyMqttClient {
                     Log.e("Mqtt", "error connecting");
                     Log.w("connected failed", "connect failed");
                     Log.w("Connected failed", exception.getMessage());
-                    connection_flag = false;
                 }
             });
 
@@ -194,15 +192,14 @@ public class MyMqttClient {
             chost = ipAddress;
             cport = port;
         }
-        Log.w("returning", String.valueOf(connection_flag));
-        return connection_flag;
+        return mqttAndroidClient.isConnected();
     }
 
     //TODO implement
     public void disconnect() {
         if (null != mqttAndroidClient && mqttAndroidClient.isConnected()) {
             try {
-                mqttAndroidClient.unsubscribe("grass/test");
+                mqttAndroidClient.unsubscribe("grass/safety");
                 mqttAndroidClient.disconnect();
                 mqttAndroidClient.unregisterResources();
                 mqttAndroidClient = null;

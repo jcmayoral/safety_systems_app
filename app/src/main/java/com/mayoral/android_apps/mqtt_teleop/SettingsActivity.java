@@ -103,9 +103,9 @@ public class SettingsActivity extends Activity {
 
     int selectColor(int status){
         switch (status){
-            case 0:   return Color.parseColor("#FF0000");
+            case 0:   return Color.parseColor("#00FF00");
             //case 1:   return Color.parseColor("#00FF00");
-            case 1:   return Color.parseColor("#0000FF");
+            case 1:   return Color.parseColor("#FF0000");
             default:   return Color.parseColor("#FF0000");
 
         }
