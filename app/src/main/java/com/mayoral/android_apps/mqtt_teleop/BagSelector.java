@@ -56,7 +56,7 @@ public class BagSelector extends Activity {
                     Log.e("sending", "ONSAVEBAGCONFIG CB" + String.valueOf(b));
 
                     if (b){
-                        result = result.concat(":"+ i);
+                        result = result.concat(i+":");
                     }
                     i++;
                     Log.e("partial result", result);

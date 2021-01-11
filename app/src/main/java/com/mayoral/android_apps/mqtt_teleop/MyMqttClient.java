@@ -70,8 +70,8 @@ public class MyMqttClient {
         JSONObject jsonvalues = new JSONObject();
 
         try {
-            jsonmessage.put("type", "Estop");
-            jsonvalues.put("boolean",state);
+            jsonmessage.put("type", "EStop");
+            jsonvalues.put("ACTION",state);
             jsonmessage.put("commands", jsonvalues);
         } catch (JSONException e) {
             e.printStackTrace();
