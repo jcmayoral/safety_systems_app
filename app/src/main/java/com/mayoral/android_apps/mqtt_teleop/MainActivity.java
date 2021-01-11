@@ -52,8 +52,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_AppCompat_DayNight);
         setContentView(R.layout.mode_selector);
-        myMqttClient = new MyMqttClient();
-        //myMqttClient.run(getApplicationContext());
+        //myMqttClient = new MyMqttClient();
 
         settingsButton = (Button) findViewById(R.id.settings_button);
         settingsButton.setOnClickListener(new View.OnClickListener() {

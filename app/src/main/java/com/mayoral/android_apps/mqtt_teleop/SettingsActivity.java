@@ -15,6 +15,9 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+
 public class SettingsActivity extends Activity {
 
     MyMqttClient myMqttClient;
@@ -86,17 +89,27 @@ public class SettingsActivity extends Activity {
         });
 
         myMqttClient = MainActivity.getMyMqttClient();
-        ipaddressText.setText(myMqttClient.getHost());
-        portText.setText(String.valueOf(myMqttClient.getPort()));
-
+        if (myMqttClient != null){
+            if (myMqttClient.client.isConnected()) {
+                ipaddressText.setText(myMqttClient.getHost());
+                portText.setText(String.valueOf(myMqttClient.getPort()));
+            }
+        }
         ConnStatusButton = findViewById(R.id.togglebutton);
         ConnStatusButton.setBackgroundColor(selectColor(1));
         Log.e("Create", "aaaa");
     }
 
     public void onClickConnect(View view) {
-        boolean result = myMqttClient.run(getApplicationContext(), ipAddress, port);
-        Log.e("settings", String.valueOf(result));
+        myMqttClient = new MyMqttClient();//getApplicationContext(), serveruri, clientId);
+        //myMqttClient = new MyMqttClient();//getApplicationContext(), ipAddress, clientId);
+        boolean result = myMqttClient.run(getApplicationContext(), ipAddress, 1883);
+
+        //if (myMqttClient.isConnectionDone()) {
+        //    Log.e("settings", "subscribing to grass/estop");
+        //    myMqttClient.subscribeTopic("grass/estop");
+        //}
+
         int val = result? 1 : 0;
         ConnStatusButton.setBackgroundColor(selectColor(val));
     }
@@ -111,14 +124,16 @@ public class SettingsActivity extends Activity {
         }
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
-        ipaddressText.setText(myMqttClient.getHost());
-        portText.setText(String.valueOf(myMqttClient.getPort()));
+        if (myMqttClient!= null){
+            if (myMqttClient.client.isConnected()) {
+                ipaddressText.setText(myMqttClient.getHost());
+                portText.setText(String.valueOf(myMqttClient.getPort()));
+            }
+        }
         Log.e("onresume", "resumming settings");
-
     }
 
     /*
@@ -141,6 +156,7 @@ public class SettingsActivity extends Activity {
     */
     @Override
     protected void onDestroy() {
+        MainActivity.setMyMqttClient(myMqttClient);
         super.onDestroy();
     }
 

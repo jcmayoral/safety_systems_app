@@ -130,7 +130,7 @@ public class TeleoperationActivity extends Activity {
 
 	public void pressEStop(View view){
 		//estop.publish();
-		if (!myMqttClient.isConnectionDone()){
+		if (!myMqttClient.client.isConnected()){
 			return;
 		}
 		robot_state.estop = !robot_state.estop;
