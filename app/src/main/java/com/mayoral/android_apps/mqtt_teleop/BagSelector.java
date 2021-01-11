@@ -1,5 +1,6 @@
 package com.mayoral.android_apps.mqtt_teleop;
 
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,6 +63,8 @@ public class BagSelector extends Activity {
 
                 }
                 Log.e("sending", result);
+                myMqttClient.publishCommand("ROSTOPIC",  MyUtils.generateDataJSON("SAVE", result));
+
             }
         });
 
@@ -75,17 +78,17 @@ public class BagSelector extends Activity {
 
         myMqttClient = MainActivity.getMyMqttClient();
         robot_state = MainActivity.getState();
-        //NOT WORKING USING SAME TOPIC FOR NOW
-        // myMqttClient.subscribeTopic("rostopic/listener");
         //TODO Unsubscribe
         selectedTopics = new ArrayList<Boolean>();
-        initList();
+        //initList();
     }
 
     void refreshList(){
-        myMqttClient.publishCommand("ROSTOPIC", "REFRESH", "ASK");
+        myMqttClient.publishCommand("ROSTOPIC",  MyUtils.generateSimpleJSON("ACTION","REFRESH"));
         String answer = myMqttClient.waitForAnswer();
-        Log.e("Received", "answer");
+        GENRES = answer.split(":");
+        Log.e("Received", answer);
+        initList();
     }
 
     void initList(){

@@ -136,7 +136,6 @@ public class SettingsActivity extends Activity {
         Log.e("onresume", "resumming settings");
     }
 
-    /*
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -153,7 +152,7 @@ public class SettingsActivity extends Activity {
         ipaddressText.setText(savedInstanceState.getString("ip"));
         portText.setText(String.valueOf(savedInstanceState.getInt("port")));
     }
-    */
+
     @Override
     protected void onDestroy() {
         MainActivity.setMyMqttClient(myMqttClient);

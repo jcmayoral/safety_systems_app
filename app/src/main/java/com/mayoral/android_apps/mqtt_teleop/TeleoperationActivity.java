@@ -2,8 +2,6 @@ package com.mayoral.android_apps.mqtt_teleop;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -104,9 +102,9 @@ public class TeleoperationActivity extends Activity {
 		myMqttClient = MainActivity.getMyMqttClient();
 		robot_state = MainActivity.getState();
 		Button button = (Button) findViewById(R.id.button);
-		button.setBackgroundColor(selectColor());
+		button.setBackgroundColor(MyUtils.selectColor(robot_state.estop));
 
-		myMqttClient.publishCommand("XMode", "START", "Teleoperation");
+		myMqttClient.publishCommand("XMode", MyUtils.generateXMODEJSON("Teleoperation","START"));
 
 		configButton = (Button) findViewById(R.id.config_recording);
 		configButton.setOnClickListener(new View.OnClickListener() {
@@ -121,24 +119,16 @@ public class TeleoperationActivity extends Activity {
 
 	}
 
-	int selectColor(){
-		if (robot_state.estop){
-			return Color.parseColor("#00FF00");
-		}
-		return Color.parseColor("#FF0000");
-	}
-
 	public void pressEStop(View view){
 		//estop.publish();
 		if (!myMqttClient.client.isConnected()){
 			return;
 		}
 		robot_state.estop = !robot_state.estop;
-		myMqttClient.publishString();
 		myMqttClient.publishEStop(robot_state.estop);
 		joystick.setEnabled(!robot_state.estop);
 		cutterControl.setEnabled(!robot_state.estop);
-		view.setBackgroundColor(selectColor());
+		view.setBackgroundColor(MyUtils.selectColor(robot_state.estop));
 	}
 
 	public void bluetoothSwitch(View v){
@@ -155,7 +145,7 @@ public class TeleoperationActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		MainActivity.setState(robot_state);
-		myMqttClient.publishCommand("XMode", "STOP" , "Teleoperation");
+		myMqttClient.publishCommand("XMode", MyUtils.generateXMODEJSON("Teleoperation","STOP"));
 	}
 
 

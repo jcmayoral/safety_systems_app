@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -15,88 +16,67 @@ import org.json.JSONObject;
 
 public class MyMqttClient {
     String clientId;
+    final String UPSTREAM_TOPIC = "grass/safety_request";
 
     //Extends does not work somehow
     MqttAndroidClient client;
     MqttConnectOptions mqttConnectOptions;
-    static MyMqttCallback myMqttCallback;
+    MyMqttCallback myMqttCallback;
 
     String chost = "10.0.0.24";
     int cport = 1883;
-
 
     String getHost(){ return  chost;};
     int getPort(){ return cport;};
     void setHost(String h){chost = h;};
     void setPort(int p){cport =p;};
 
-    public void publishString(){
+    public void publishCommand(String type, JSONObject command){
         if (!client.isConnected()){
             return;
         }
-        String topic = "grass/safety_request";
-        String payload = "the payload";
-        byte[] encodedPayload = new byte[0];
-        try {
-            MqttMessage message = new MqttMessage();
-            //message.setRetained(true);
-            message.setPayload(payload.getBytes());
-            client.publish(topic, message);
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-        //mqttAndroidClient.pu.publish("grasx|
-        // s/test2", payload=random.normalvariate(30, 0.5), qos=0)
-    }
 
-    public void publishCommand(String type, String command_id, String command){
-        if (!client.isConnected()){
-            return;
-        }
-        String topic = "grass/safety_request";
-        //String payload = "the payload";
-        //double number = 10.0;
         JSONObject jsonmessage = new JSONObject();
         JSONObject jsonvalues = new JSONObject();
 
         byte[] encodedPayload = new byte[0];
         try {
             jsonmessage.put("type", type);
-            jsonvalues.put(command_id, command);
-            //jsonvalues.put("double", number);
-            jsonmessage.put("commands", jsonvalues);
-            MqttMessage message = new MqttMessage();
-            message.setPayload(jsonmessage.toString().getBytes());
-            client.publish(topic, message);
-        } catch (MqttException | JSONException e) {
+            //jsonvalues.put(command_id, command);
+            jsonmessage.put("commands", command);
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-        //mqttAndroidClient.pu.publish("grass/test2", payload=random.normalvariate(30, 0.5), qos=0)
+        publishMessage(jsonmessage);
     }
 
+    private void publishMessage(JSONObject jsonmessage){
+        MqttMessage message = new MqttMessage();
+        message.setQos(1);
+        message.setRetained(false);
+        message.setPayload(jsonmessage.toString().getBytes());
+        try {
+            client.publish(UPSTREAM_TOPIC, message);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void publishEStop(boolean state){
         if (!client.isConnected()){
             return;
         }
-        String topic = "grass/safety_request";
-        //String payload = "the payload";
-        //double number = 10.0;
         JSONObject jsonmessage = new JSONObject();
         JSONObject jsonvalues = new JSONObject();
 
-        byte[] encodedPayload = new byte[0];
         try {
             jsonmessage.put("type", "Estop");
             jsonvalues.put("boolean",state);
-            //jsonvalues.put("double", number);
             jsonmessage.put("commands", jsonvalues);
-            MqttMessage message = new MqttMessage();
-            message.setPayload(jsonmessage.toString().getBytes());
-            client.publish(topic, message);
-        } catch (MqttException | JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+        publishMessage(jsonmessage);
     }
 
     public String waitForAnswer(){
@@ -179,7 +159,7 @@ public class MyMqttClient {
     public IMqttToken disconnect() {
         if (client.isConnected() && client != null) {
             try {
-                IMqttToken token = client.unsubscribe("grass/safety");
+                IMqttToken token = client.unsubscribe("grass/safety_callback");
                 client.disconnect();
                 client.unregisterResources();
                 client = null;

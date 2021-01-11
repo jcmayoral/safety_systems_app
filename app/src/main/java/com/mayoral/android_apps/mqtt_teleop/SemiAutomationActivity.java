@@ -2,7 +2,6 @@
 package com.mayoral.android_apps.mqtt_teleop;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +12,6 @@ public class SemiAutomationActivity extends Activity {
 	RobotState robot_state;
 	MyMqttClient myMqttClient;
 	static BluetoothTracker bluetoothtracker;
-
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,10 +27,10 @@ public class SemiAutomationActivity extends Activity {
 
 		myMqttClient = MainActivity.getMyMqttClient();
 		robot_state = MainActivity.getState();
-		myMqttClient.publishCommand("XMode", "START", "SemiAutonomous");
+		myMqttClient.publishCommand("XMode", MyUtils.generateXMODEJSON("SemiAutonomous","START"));
 
 		Button button = (Button) findViewById(R.id.button);
-		button.setBackgroundColor(selectColor());
+		button.setBackgroundColor(MyUtils.selectColor(robot_state.estop));
 	}
 
 	public void pressEStop(View view) {
@@ -40,22 +38,14 @@ public class SemiAutomationActivity extends Activity {
 			return;
 		}
 		robot_state.estop = !robot_state.estop;
-		myMqttClient.publishString();
 		myMqttClient.publishEStop(robot_state.estop);
-		view.setBackgroundColor(selectColor());
-	}
-
-	int selectColor(){
-		if (robot_state.estop){
-			return Color.parseColor("#00FF00");
-		}
-		return Color.parseColor("#FF0000");
+		view.setBackgroundColor(MyUtils.selectColor(robot_state.estop));
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		MainActivity.setState(robot_state);
-		myMqttClient.publishCommand("XMode", "STOP", "SemiAutonomous");
+		myMqttClient.publishCommand("XMode", MyUtils.generateXMODEJSON("SemiAutonomous","STOP"));
 	}
 }
