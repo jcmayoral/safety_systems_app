@@ -97,9 +97,10 @@ public class MyMqttClient {
         //mqttAndroidClient.pu.publish("grass/test2", payload=random.normalvariate(30, 0.5), qos=0)
     }
 
-    public void subscribeTopic(String topic) {
+    public void subscribetoTopic(String topic, Context context) {
         try {
-            mqttAndroidClient.subscribe(topic, 0, null, new IMqttActionListener() {
+            Log.w("AAAAAAAAAAAAAAAA", mqttAndroidClient.getClientId());
+            IMqttToken subscribe_token =  mqttAndroidClient.subscribe(topic, 0, context, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.i("subscribed success", "subscribed succeed");
@@ -152,6 +153,9 @@ public class MyMqttClient {
             public void messageArrived(String topic, MqttMessage message) throws Exception {
                 Log.i("message arrived", "topic: " + topic + ", msg: " + new String(message.getPayload()));
                 connection_flag = true;
+                if (mqttAndroidClient.isConnected()){
+                    subscribetoTopic("grasstest", context);
+                }
             }
 
             @Override
@@ -169,7 +173,7 @@ public class MyMqttClient {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.e("Mqtt", "before connected");
                     Log.w("connected succeed", "connect succeed");
-                    //subscribeTopic("grass/test");
+                    subscribetoTopic("grass/test", null);
                     connection_flag = true;
                 }
 
@@ -190,6 +194,21 @@ public class MyMqttClient {
             chost = ipAddress;
             cport = port;
         }
+        Log.w("returning", String.valueOf(connection_flag));
         return connection_flag;
+    }
+
+    //TODO implement
+    public void disconnect() {
+        if (null != mqttAndroidClient && mqttAndroidClient.isConnected()) {
+            try {
+                mqttAndroidClient.unsubscribe("grass/test");
+                mqttAndroidClient.disconnect();
+                mqttAndroidClient.unregisterResources();
+                mqttAndroidClient = null;
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

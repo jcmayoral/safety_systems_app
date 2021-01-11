@@ -90,7 +90,7 @@ public class SettingsActivity extends Activity {
         portText.setText(String.valueOf(myMqttClient.getPort()));
 
         ConnStatusButton = findViewById(R.id.togglebutton);
-        ConnStatusButton.setBackgroundColor(selectColor(2));
+        ConnStatusButton.setBackgroundColor(selectColor(1));
         Log.e("Create", "aaaa");
     }
 
@@ -104,9 +104,9 @@ public class SettingsActivity extends Activity {
     int selectColor(int status){
         switch (status){
             case 0:   return Color.parseColor("#FF0000");
-            case 1:   return Color.parseColor("#00FF00");
-            case 2:   return Color.parseColor("#0000FF");
-            default:   return Color.parseColor("#000000");
+            //case 1:   return Color.parseColor("#00FF00");
+            case 1:   return Color.parseColor("#0000FF");
+            default:   return Color.parseColor("#FF0000");
 
         }
     }
