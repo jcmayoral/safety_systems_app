@@ -36,7 +36,7 @@ public class SemiAutomationActivity extends Activity {
 	}
 
 	public void pressEStop(View view) {
-		if (!myMqttClient.isConnectionDone()){
+		if (!myMqttClient.isConnected()){
 			return;
 		}
 		robot_state.estop = !robot_state.estop;

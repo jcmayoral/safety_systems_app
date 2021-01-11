@@ -65,9 +65,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:saveEnabled="true"
                 android:inputType="numberSigned"
-                android:text="1111" />
+                android:saveEnabled="true"
+                android:text="1883" />
         </TableRow>
 
         <TableRow

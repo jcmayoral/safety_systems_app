@@ -18,6 +18,10 @@ public class BagSelector extends Activity {
     private ListView listView;
     private Button backButton;
     private Button saveBagButton;
+    private  Button refreshButton;
+    MyMqttClient myMqttClient;
+    RobotState robot_state;
+
     static public List<Boolean> selectedTopics;
     private static  String[] GENRES = new String[] {
             "Action", "Adventure", "Animation", "Children", "Comedy", "Documentary", "Drama",
@@ -29,7 +33,6 @@ public class BagSelector extends Activity {
         setContentView(R.layout.topics_selection);
         listView =(ListView)findViewById(R.id.list);
 
-        /*
         backButton = (Button) findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,7 +40,6 @@ public class BagSelector extends Activity {
                 onBackPressed();
             }
         });
-        */
 
         saveBagButton = (Button) findViewById(R.id.save_bag_button);
         saveBagButton.setOnClickListener(new View.OnClickListener() {
@@ -61,8 +63,27 @@ public class BagSelector extends Activity {
             }
         });
 
+        refreshButton = (Button) findViewById(R.id.refresh_button);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refreshList();
+            }
+        });
+
+        myMqttClient = MainActivity.getMyMqttClient();
+        robot_state = MainActivity.getState();
+        //NOT WORKING USING SAME TOPIC FOR NOW
+        // myMqttClient.subscribeTopic("rostopic/listener");
+        //TODO Unsubscribe
         selectedTopics = new ArrayList<Boolean>();
         initList();
+    }
+
+    void refreshList(){
+        myMqttClient.publishCommand("ROSTOPIC", "REFRESH", "ASK");
+        String answer = myMqttClient.waitForAnswer();
+        Log.e("Received", "answer");
     }
 
     void initList(){

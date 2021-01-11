@@ -8,20 +8,28 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.MqttToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MyMqttClient {
+public class MyMqttClient extends  MqttAndroidClient  {
     String clientId;
-    MqttAndroidClient mqttAndroidClient;
+    //MqttAndroidClient mqttAndroidClient;
     MqttConnectOptions mqttConnectOptions;
+    static MyMqttCallback myMqttCallback;
+
     String chost = "10.0.0.24";
     int cport = 1883;
-    boolean connection_flag = false;
+
+    public MyMqttClient(Context context, String serverURI, String clientId) {
+        super(context, serverURI, clientId);
+    }
+
 
     String getHost(){ return  chost;};
     int getPort(){ return cport;};
@@ -29,7 +37,7 @@ public class MyMqttClient {
     void setPort(int p){cport =p;};
 
     public void publishString(){
-        if (!connection_flag){
+        if (!isConnected()){
             return;
         }
         String topic = "grass/commands";
@@ -39,15 +47,16 @@ public class MyMqttClient {
             MqttMessage message = new MqttMessage();
             //message.setRetained(true);
             message.setPayload(payload.getBytes());
-            mqttAndroidClient.publish(topic, message);
+            publish(topic, message);
         } catch (MqttException e) {
             e.printStackTrace();
         }
-        //mqttAndroidClient.pu.publish("grass/test2", payload=random.normalvariate(30, 0.5), qos=0)
+        //mqttAndroidClient.pu.publish("grasx|
+        // s/test2", payload=random.normalvariate(30, 0.5), qos=0)
     }
 
     public void publishCommand(String type, String command_id, String command){
-        if (!connection_flag){
+        if (!isConnected()){
             return;
         }
         String topic = "grass/estop";
@@ -64,7 +73,7 @@ public class MyMqttClient {
             jsonmessage.put("commands", jsonvalues);
             MqttMessage message = new MqttMessage();
             message.setPayload(jsonmessage.toString().getBytes());
-            mqttAndroidClient.publish(topic, message);
+            publish(topic, message);
         } catch (MqttException | JSONException e) {
             e.printStackTrace();
         }
@@ -73,7 +82,7 @@ public class MyMqttClient {
 
 
     public void publishEStop(boolean state){
-        if (!connection_flag){
+        if (!isConnected()){
             return;
         }
         String topic = "grass/estop";
@@ -90,26 +99,32 @@ public class MyMqttClient {
             jsonmessage.put("commands", jsonvalues);
             MqttMessage message = new MqttMessage();
             message.setPayload(jsonmessage.toString().getBytes());
-            mqttAndroidClient.publish(topic, message);
+            publish(topic, message);
         } catch (MqttException | JSONException e) {
             e.printStackTrace();
         }
         //mqttAndroidClient.pu.publish("grass/test2", payload=random.normalvariate(30, 0.5), qos=0)
     }
 
-    public void subscribeTopic(String topic) {
+    public String waitForAnswer(){
+        Log.w("esperando", "respuesta esperando");
+        while (!myMqttCallback.isMessageReceived()){
+        }
+        return myMqttCallback.getAnswer();
+    }
+
+    public void subscribeTopic(String topic, Context context) {
         try {
-            mqttAndroidClient.subscribe(topic, 0, null, new IMqttActionListener() {
+            Log.w("ERROR=", topic + String.valueOf(isConnected()));
+            subscribe(topic, 0, context, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.i("subscribed success", "subscribed succeed");
-                    connection_flag = true;
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Log.i("subscribed Failed", "subscribed failed");
-                    connection_flag = false;
                 }
             });
 
@@ -120,15 +135,13 @@ public class MyMqttClient {
         }
     }
 
-    boolean isConnectionDone(){
-        return connection_flag;
-    }
 
     public boolean run(Context context, String ipAddress, int port){
-        clientId = MqttClient.generateClientId();
         /* Create an MqttConnectOptions object and configure the username and password. */
+        //clientId = MqttClient.generateClientId();
         mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
+        mqttConnectOptions.setCleanSession(true);
         //mqttConnectOptions.setUserName(userName);
         //mqttConnectOptions.setPassword(passWord.toCharArray());
 
@@ -137,40 +150,20 @@ public class MyMqttClient {
         //PERSONAL PC
         //mqttAndroidClient = new MqttAndroidClient(context, "tcp://10.230.41.2:1883", clientId);
         //Brekkeveien
-        String serveruri = "tcp://" + ipAddress+":"+String.valueOf(port);
+        //String serveruri = "tcp://" + ipAddress+":"+String.valueOf(port);
 
-        mqttAndroidClient = new MqttAndroidClient(context, serveruri, clientId);
-
-        mqttAndroidClient.setCallback(new MqttCallback() {
-            @Override
-            public void connectionLost(Throwable cause) {
-                Log.i("Connected", "connection lost");
-                connection_flag = false;
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage message) throws Exception {
-                Log.i("message arrived", "topic: " + topic + ", msg: " + new String(message.getPayload()));
-                connection_flag = true;
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken token) {
-                Log.i("delivered", "msg delivered");
-                connection_flag = true;
-            }
-        });
-
-        Log.w("Mqtt", "before connected");
+        //setHost(ipAddress);
+        //setPort(port);
+        //mqttAndroidClient = new MqttAndroidClient(context, serveruri, clientId);
+        myMqttCallback = new MyMqttCallback();
+        setCallback(myMqttCallback);
+        Log.w("Mqtt", "trying to connect  " + ipAddress+"  port"+port);
         try {
-            Log.e("Mqtt", "before connectinhg");
-            mqttAndroidClient.connect(mqttConnectOptions, context, new IMqttActionListener() {
+            IMqttToken connectToken = connect(mqttConnectOptions, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Log.e("Mqtt", "before connected");
+                    Log.e("Mqtt", "connected SUCCESS");
                     Log.w("connected succeed", "connect succeed");
-                    //subscribeTopic("grass/test");
-                    connection_flag = true;
                 }
 
                 @Override
@@ -178,18 +171,19 @@ public class MyMqttClient {
                     Log.e("Mqtt", "error connecting");
                     Log.w("connected failed", "connect failed");
                     Log.w("Connected failed", exception.getMessage());
-                    connection_flag = false;
                 }
             });
 
         } catch (MqttException e) {
-            e.printStackTrace();
+                Log.e("e", e.getMessage());
         }
 
-        if (connection_flag){
+        if (isConnected()){
             chost = ipAddress;
             cport = port;
+            subscribeTopic("grass/test", context);
         }
-        return connection_flag;
+
+        return isConnected();
     }
 }
