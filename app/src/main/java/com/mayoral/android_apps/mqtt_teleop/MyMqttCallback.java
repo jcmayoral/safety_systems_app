@@ -15,6 +15,9 @@ public class MyMqttCallback implements MqttCallback {
         return  answer_ready;
     }
 
+    public void clearMessageFlag(){
+        answer_ready = false;
+    }
     public  String getAnswer(){
         return answer;
     }

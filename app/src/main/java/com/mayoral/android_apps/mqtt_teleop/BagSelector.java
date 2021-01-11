@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BagSelector extends Activity {
     private ListView listView;
@@ -22,6 +24,8 @@ public class BagSelector extends Activity {
     private  Button refreshButton;
     MyMqttClient myMqttClient;
     RobotState robot_state;
+    Timer responseTimer;
+    TimerTask myTimerTask;
 
     static public List<Boolean> selectedTopics;
     private static  String[] GENRES = new String[] {
@@ -83,12 +87,33 @@ public class BagSelector extends Activity {
         //initList();
     }
 
-    void refreshList(){
-        myMqttClient.publishCommand("ROSTOPIC",  MyUtils.generateSimpleJSON("ACTION","REFRESH"));
+    void refreshList() {
+        /*
+        myTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                if (myMqttClient.myMqttCallback.isMessageReceived()){
+                    Log.w("WORKS", "aaaaaaaaaaaaaaaaaaaaaaa");
+                    isTriggered = true;
+                    checkUpdates();
+                }
+            }
+        };
+        responseTimer = new Timer();
+        responseTimer.scheduleAtFixedRate(myTimerTask,
+                100,
+                100);
+         */
+        myMqttClient.publishCommand("ROSTOPIC", MyUtils.generateSimpleJSON("ACTION", "REFRESH"));
+        checkUpdates();
+    }
+
+    boolean checkUpdates(){
         String answer = myMqttClient.waitForAnswer();
         GENRES = answer.split(":");
         Log.e("Received", answer);
         initList();
+        return  true;
     }
 
     void initList(){

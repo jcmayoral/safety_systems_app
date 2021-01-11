@@ -80,9 +80,10 @@ public class MyMqttClient {
     }
 
     public String waitForAnswer(){
-        Log.w("esperando", "respuesta esperando");
-        while (!myMqttCallback.isMessageReceived()){
+        if (!myMqttCallback.isMessageReceived()){
+            return "NOTHING:NOTHING";
         }
+        myMqttCallback.clearMessageFlag();
         return myMqttCallback.getAnswer();
     }
 
@@ -114,7 +115,6 @@ public class MyMqttClient {
         mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
         mqttConnectOptions.setCleanSession(true);
-
 
         String serveruri = "tcp://" + ipAddress+":"+String.valueOf(port);
         String clientId = MqttClient.generateClientId();
