@@ -45,13 +45,10 @@ public class SettingsActivity extends Activity {
         ipaddressText = (EditText)findViewById(R.id.ip_address);
         portText = (EditText)findViewById(R.id.port);
 
-
-        /*
         if (savedInstanceState != null){
             ipaddressText.setText(savedInstanceState.getString("ip"));
             portText.setText(String.valueOf(savedInstanceState.getInt("port")));
         }
-        */
 
         ipaddressText.addTextChangedListener(new TextWatcher() {
             @Override
