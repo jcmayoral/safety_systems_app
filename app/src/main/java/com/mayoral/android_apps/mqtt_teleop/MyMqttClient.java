@@ -110,11 +110,16 @@ public class MyMqttClient {
     }
 
 
-    public boolean run(Context context, String ipAddress, int port){
+    public boolean connectMqtt(Context context, String ipAddress, int port){
+        if (client != null){
+            Log.e("connectMQtt", "connexion en progreso");
+            return  false;
+        }
         /* Create an MqttConnectOptions object and configure the username and password. */
         mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
         mqttConnectOptions.setCleanSession(true);
+        mqttConnectOptions.setKeepAliveInterval(200);
 
         String serveruri = "tcp://" + ipAddress+":"+String.valueOf(port);
         String clientId = MqttClient.generateClientId();
@@ -125,7 +130,7 @@ public class MyMqttClient {
         Log.w("Mqtt", "trying to connect  " + ipAddress+"  port"+port);
 
         try {
-            IMqttToken connectToken = client.connect(mqttConnectOptions, context, new IMqttActionListener() {
+            IMqttToken connectToken = client.connect(mqttConnectOptions, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.e("Mqtt", "connected SUCCESS");
@@ -169,4 +174,6 @@ public class MyMqttClient {
         }
         return null;
     }
+
+
 }

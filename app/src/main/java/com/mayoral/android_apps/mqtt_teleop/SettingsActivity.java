@@ -100,7 +100,7 @@ public class SettingsActivity extends Activity {
     public void onClickConnect(View view) {
         myMqttClient = new MyMqttClient();//getApplicationContext(), serveruri, clientId);
         //myMqttClient = new MyMqttClient();//getApplicationContext(), ipAddress, clientId);
-        boolean result = myMqttClient.run(getApplicationContext(), ipAddress, 1883);
+        boolean result = myMqttClient.connectMqtt(getApplicationContext(), ipAddress, 1883);
 
         //if (myMqttClient.isConnectionDone()) {
         //    Log.e("settings", "subscribing to grass/estop");
