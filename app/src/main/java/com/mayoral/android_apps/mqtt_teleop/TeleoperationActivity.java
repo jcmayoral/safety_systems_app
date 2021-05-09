@@ -51,6 +51,9 @@ public class TeleoperationActivity extends Activity {
 				coordinate_view.setText("ERR");
 				strength_view.setText("ERR");
 
+				int angle_cmd = 0;
+				int linear_cmd = 0;
+
 				if ((135 > angle) && (angle > 45)) {
 					angle_view.setText("F" + angle + "°");
 					coordinate_view.setText(
@@ -58,6 +61,8 @@ public class TeleoperationActivity extends Activity {
 									x,
 									y));
 					strength_view.setText(strength + "%");
+					angle_cmd = angle;
+					linear_cmd = strength;
 				}
 
 				if ((315 > angle) && (angle > 225)) {
@@ -67,7 +72,13 @@ public class TeleoperationActivity extends Activity {
 									x,
 									y));
 					strength_view.setText(strength + "%");
+					angle_cmd = angle;
+					linear_cmd = strength;
 				}
+
+				String[] commands = {"linear", "Steering"};
+				double[] speeds = {linear_cmd, angle_cmd};
+				myMqttClient.publishCommand("XMOVE", MyUtils.generateNestedCommandsJSON("BASE",commands, speeds));
 
 			}
 		});
@@ -121,6 +132,9 @@ public class TeleoperationActivity extends Activity {
 
 	public void pressEStop(View view){
 		//estop.publish();
+		if (myMqttClient.client == null) {
+			return;
+		}
 		if (!myMqttClient.client.isConnected()){
 			return;
 		}

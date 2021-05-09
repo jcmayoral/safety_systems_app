@@ -27,6 +27,22 @@ public class MyUtils {
         return jobject;
     }
 
+    static JSONObject generateNestedCommandsJSON(String mode, String[] commands, double[] values) {
+        JSONObject jobject = new JSONObject();
+        JSONObject nested = new JSONObject();
+        try {
+            jobject.put("ACTION", mode);
+            for (int index=0; index < commands.length; index++){
+                nested.put(commands[index], values[index]);
+            }
+            jobject.put("COMMANDS", nested);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jobject;
+    }
+
+
     static JSONObject generateDataJSON(String mode, String data) {
         JSONObject jobject = new JSONObject();
         try {
