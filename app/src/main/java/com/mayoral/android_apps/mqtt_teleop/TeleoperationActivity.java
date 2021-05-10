@@ -54,7 +54,7 @@ public class TeleoperationActivity extends Activity {
 				int angle_cmd = 0;
 				int linear_cmd = 0;
 
-				if ((135 > angle) && (angle > 45)) {
+				//if ((135 > angle) && (angle > 45)) {
 					angle_view.setText("F" + angle + "°");
 					coordinate_view.setText(
 							String.format("x%03d:y%03d",
@@ -63,9 +63,9 @@ public class TeleoperationActivity extends Activity {
 					strength_view.setText(strength + "%");
 					angle_cmd = angle;
 					linear_cmd = strength;
-				}
+				//}
 
-				if ((315 > angle) && (angle > 225)) {
+				/*if ((315 > angle) && (angle > 225)) {
 					angle_view.setText("B" + angle + "°");
 					coordinate_view.setText(
 							String.format("x%03d:y%03d",
@@ -74,7 +74,9 @@ public class TeleoperationActivity extends Activity {
 					strength_view.setText(strength + "%");
 					angle_cmd = angle;
 					linear_cmd = strength;
-				}
+				}*/
+				angle_cmd = angle;
+				linear_cmd = strength;
 
 				String[] commands = {"linear", "Steering"};
 				double[] speeds = {linear_cmd, angle_cmd};
