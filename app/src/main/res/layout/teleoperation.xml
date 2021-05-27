@@ -96,7 +96,6 @@
                 android:clickable="false"
                 android:editable="false"
                 android:ems="10"
-                android:inputType="textPersonName"
                 android:text="Robot" />
 
             <io.github.controlwear.virtual.joystick.android.JoystickView
@@ -130,7 +129,6 @@
                     android:clickable="false"
                     android:editable="false"
                     android:ems="10"
-                    android:inputType="textPersonName"
                     android:text="Tool" />
 
             </LinearLayout>
@@ -149,7 +147,6 @@
                     android:clickable="false"
                     android:editable="false"
                     android:ems="10"
-                    android:inputType="textPersonName"
                     android:text="PWM" />
 
                 <TextView
