@@ -19,13 +19,9 @@ public class TeleoperationActivity extends Activity {
 	private TextView angle_view;
 	private TextView strength_view;
 	private TextView coordinate_view;
-	private TextView cutter_angle;
-	private TextView cutter_strength;
-	private TextView cutter_coordinate;
+	private TextView pwm_value;
 
 	JoystickView joystick;
-	JoystickView cutterControl;
-	//static BluetoothTracker bluetoothtracker;
 	MyMqttClient myMqttClient;
 	RobotState robot_state;
 
@@ -39,6 +35,8 @@ public class TeleoperationActivity extends Activity {
 		strength_view = (TextView) findViewById(R.id.strength_view);
 		coordinate_view = findViewById(R.id.coordinate_view);
 		joystick = (JoystickView) findViewById(R.id.robot_control);
+
+		pwm_value = (TextView) findViewById(R.id.pwm_values);
 
 		joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
 			//@SuppressLint("DefaultLocale")
@@ -85,25 +83,6 @@ public class TeleoperationActivity extends Activity {
 			}
 		});
 
-		cutter_angle = (TextView) findViewById(R.id.cutter_angle);
-		cutter_strength = (TextView) findViewById(R.id.cutter_strenght);
-		cutter_coordinate = findViewById(R.id.cutter_coordinate);
-
-		cutterControl = (JoystickView) findViewById(R.id.cutter_control);
-		cutterControl.setOnMoveListener(new JoystickView.OnMoveListener() {
-			//@SuppressLint("DefaultLocale")
-			@Override
-			public void onMove(int angle, int strength) {
-				cutter_angle.setText(angle + "°");
-				cutter_strength.setText(strength + "%");
-				cutter_coordinate.setText(
-						String.format("x%03d:y%03d",
-								cutterControl.getNormalizedX(),
-								cutterControl.getNormalizedY())
-				);
-			}
-		});
-
         backButton = (Button) findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,8 +122,26 @@ public class TeleoperationActivity extends Activity {
 		robot_state.estop = !robot_state.estop;
 		myMqttClient.publishEStop(robot_state.estop);
 		joystick.setEnabled(!robot_state.estop);
-		cutterControl.setEnabled(!robot_state.estop);
 		view.setBackgroundColor(MyUtils.selectColor(robot_state.estop));
+	}
+
+
+	public void toggleConveyor(View view){
+		if (myMqttClient.client == null) {
+			return;
+		}
+		if (!myMqttClient.client.isConnected()){
+			return;
+		}
+
+		robot_state.conveyor_state = !robot_state.conveyor_state;
+
+		Log.e("conveyor", String.valueOf(robot_state.conveyor_state));
+		String[] commands = {"toggle"};
+		double toggle_value = robot_state.conveyor_state ? 1d : 0d;
+		double[] values = {Double.valueOf(toggle_value)};
+		myMqttClient.publishCommand("XMOVE", MyUtils.generateNestedCommandsJSON("TOOL",commands, values));
+		view.setBackgroundColor(MyUtils.selectColor(robot_state.conveyor_state));
 	}
 
 	public void bluetoothSwitch(View v){
