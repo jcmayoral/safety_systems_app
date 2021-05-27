@@ -161,7 +161,7 @@
                     android:text="0" />
 
                 <SeekBar
-                    android:id="@+id/seekBar"
+                    android:id="@+id/pwm_seekbar"
                     android:layout_width="235dp"
                     android:layout_height="55dp"
                     android:max="100"

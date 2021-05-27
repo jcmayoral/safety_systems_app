@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ public class TeleoperationActivity extends Activity {
 	private TextView strength_view;
 	private TextView coordinate_view;
 	private TextView pwm_value;
+	private SeekBar pwm_bar;
 
 	JoystickView joystick;
 	MyMqttClient myMqttClient;
@@ -37,6 +39,35 @@ public class TeleoperationActivity extends Activity {
 		joystick = (JoystickView) findViewById(R.id.robot_control);
 
 		pwm_value = (TextView) findViewById(R.id.pwm_values);
+
+		pwm_bar = (SeekBar) findViewById(R.id.pwm_seekbar);
+		pwm_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				if (myMqttClient.client == null) {
+					return;
+				}
+				if (!myMqttClient.client.isConnected()){
+					return;
+				}
+
+				String[] commands = {"PWM"};
+				double[] values = {progress};
+				myMqttClient.publishCommand("XMOVE", MyUtils.generateNestedCommandsJSON("TOOL",commands, values));
+				pwm_value.setText(String.valueOf(progress));
+
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+
+			}
+		});
 
 		joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
 			//@SuppressLint("DefaultLocale")
