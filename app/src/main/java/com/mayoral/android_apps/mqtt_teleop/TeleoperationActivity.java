@@ -193,7 +193,7 @@ public class TeleoperationActivity extends Activity {
 				robot_state.estop = !robot_state.estop;
 				myMqttClient.publishEStop(robot_state.estop);
 				recording = !recording;
-				myMqttClient.publishCommand("ROSTOPIC",  MyUtils.generateDataJSON("START", Boolean.toString(recording)));
+				myMqttClient.publishCommand("ROSTOPIC",  MyUtils.generateDataJSON("RECORD", Boolean.toString(recording)));
 				v.setBackgroundColor(MyUtils.selectColor(recording));
 			}
 		});
@@ -247,7 +247,7 @@ public class TeleoperationActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		MainActivity.setState(robot_state);
-		myMqttClient.publishCommand("ROSTOPIC",  MyUtils.generateDataJSON("START", Boolean.toString(false)));
+		myMqttClient.publishCommand("ROSTOPIC",  MyUtils.generateDataJSON("RECORD", Boolean.toString(false)));
 		myMqttClient.publishCommand("XMode", MyUtils.generateXMODEJSON("Teleoperation","STOP"));
 	}
 
