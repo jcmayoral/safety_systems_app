@@ -100,7 +100,7 @@
 
             <io.github.controlwear.virtual.joystick.android.JoystickView
                 android:id="@+id/robot_control"
-                android:layout_width="281dp"
+                android:layout_width="294dp"
                 android:layout_height="241dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
@@ -147,7 +147,7 @@
                     android:clickable="false"
                     android:editable="false"
                     android:ems="10"
-                    android:text="PWM" />
+                    android:text="Tool PWM" />
 
                 <TextView
                     android:id="@+id/pwm_values"
@@ -161,7 +161,40 @@
                     android:id="@+id/pwm_seekbar"
                     android:layout_width="235dp"
                     android:layout_height="55dp"
-                    android:max="100"
+                    android:max="255"
+                    android:progress="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/pwmname2"
+                    android:layout_width="106dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:clickable="false"
+                    android:editable="false"
+                    android:ems="10"
+                    android:text="Conveyor PWM" />
+
+                <TextView
+                    android:id="@+id/pwm_values2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="0" />
+
+                <SeekBar
+                    android:id="@+id/pwm_seekbar2"
+                    android:layout_width="235dp"
+                    android:layout_height="55dp"
+                    android:max="255"
                     android:progress="0" />
 
             </LinearLayout>

@@ -23,6 +23,9 @@ public class TeleoperationActivity extends Activity {
 	private TextView pwm_value;
 	private SeekBar pwm_bar;
 
+	private TextView pwm_value2;
+	private SeekBar pwm_bar2;
+
 	JoystickView joystick;
 	MyMqttClient myMqttClient;
 	RobotState robot_state;
@@ -68,6 +71,38 @@ public class TeleoperationActivity extends Activity {
 
 			}
 		});
+
+		pwm_value2 = (TextView) findViewById(R.id.pwm_values2);
+
+		pwm_bar2 = (SeekBar) findViewById(R.id.pwm_seekbar2);
+		pwm_bar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				if (myMqttClient.client == null) {
+					return;
+				}
+				if (!myMqttClient.client.isConnected()){
+					return;
+				}
+
+				String[] commands = {"CONVEYOR"};
+				double[] values = {progress};
+				myMqttClient.publishCommand("XMOVE", MyUtils.generateNestedCommandsJSON("TOOL",commands, values));
+				pwm_value2.setText(String.valueOf(progress));
+
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+
+			}
+		});
+
 
 		joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
 			//@SuppressLint("DefaultLocale")
