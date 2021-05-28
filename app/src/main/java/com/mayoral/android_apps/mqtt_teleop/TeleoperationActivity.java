@@ -16,6 +16,7 @@ public class TeleoperationActivity extends Activity {
 	private Button backButton;
 	//static EStopPublisher estop;
 	Button configButton;
+	Button bagrecordingButton;
 
 	private TextView angle_view;
 	private TextView strength_view;
@@ -29,6 +30,8 @@ public class TeleoperationActivity extends Activity {
 	JoystickView joystick;
 	MyMqttClient myMqttClient;
 	RobotState robot_state;
+
+	boolean recording;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,7 @@ public class TeleoperationActivity extends Activity {
 			}
 		});
 
+		recording = false;
 		pwm_value2 = (TextView) findViewById(R.id.pwm_values2);
 
 		pwm_bar2 = (SeekBar) findViewById(R.id.pwm_seekbar2);
@@ -172,8 +176,27 @@ public class TeleoperationActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-		Log.e("OOOO", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
+
+		Log.i("XMODE", "Teleoperation Started");
+
+		bagrecordingButton = (Button) findViewById(R.id.record_data_button);
+		bagrecordingButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (myMqttClient.client == null) {
+					return;
+				}
+				if (!myMqttClient.client.isConnected()){
+					return;
+				}
+				robot_state.estop = !robot_state.estop;
+				myMqttClient.publishEStop(robot_state.estop);
+				recording = !recording;
+				myMqttClient.publishCommand("ROSTOPIC",  MyUtils.generateDataJSON("START", Boolean.toString(recording)));
+				v.setBackgroundColor(MyUtils.selectColor(recording));
+			}
+		});
 
 	}
 
@@ -224,6 +247,7 @@ public class TeleoperationActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		MainActivity.setState(robot_state);
+		myMqttClient.publishCommand("ROSTOPIC",  MyUtils.generateDataJSON("START", Boolean.toString(false)));
 		myMqttClient.publishCommand("XMode", MyUtils.generateXMODEJSON("Teleoperation","STOP"));
 	}
 
