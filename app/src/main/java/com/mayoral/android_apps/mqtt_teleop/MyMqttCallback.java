@@ -7,18 +7,18 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MyMqttCallback implements MqttCallback {
-    String answer ="";
-    boolean connection_flag = false;
-    boolean answer_ready = false;
+    static String answer ="ERROR";
+    static boolean answer_ready = false;
 
-    public  boolean isMessageReceived(){
+    public static boolean isMessageReceived(){
         return  answer_ready;
     }
 
-    public void clearMessageFlag(){
+    public static void clearMessageFlag(){
         answer_ready = false;
     }
-    public  String getAnswer(){
+
+    public  static String getAnswer(){
         return answer;
     }
 
@@ -31,7 +31,6 @@ public class MyMqttCallback implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         Log.e("message arrived", "topic: " + topic + ", msg: " + new String(message.getPayload()));
-        connection_flag = true;
         answer = new String(message.getPayload());
         answer_ready = true;
     }

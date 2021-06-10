@@ -105,15 +105,10 @@ public class BagSelector extends Activity {
                 100);
          */
         myMqttClient.publishCommand("ROSTOPIC", MyUtils.generateSimpleJSON("ACTION", "REFRESH"));
-        checkUpdates();
-    }
-
-    boolean checkUpdates(){
         String answer = myMqttClient.waitForAnswer();
         GENRES = answer.split(":");
         Log.e("Received", answer);
         initList();
-        return  true;
     }
 
     void initList(){

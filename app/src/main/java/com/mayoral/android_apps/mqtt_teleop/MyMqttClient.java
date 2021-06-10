@@ -1,6 +1,7 @@
 package com.mayoral.android_apps.mqtt_teleop;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -22,6 +23,7 @@ public class MyMqttClient {
     MqttAndroidClient client;
     MqttConnectOptions mqttConnectOptions;
     MyMqttCallback myMqttCallback;
+    boolean isMessageReady = false;
 
     String chost = "10.0.0.24";
     int cport = 1883;
@@ -36,23 +38,35 @@ public class MyMqttClient {
             return;
         }
 
-        JSONObject jsonmessage = new JSONObject();
-        JSONObject jsonvalues = new JSONObject();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-        byte[] encodedPayload = new byte[0];
-        try {
-            jsonmessage.put("type", type);
-            //jsonvalues.put(command_id, command);
-            jsonmessage.put("commands", command);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        publishMessage(jsonmessage);
+                JSONObject jsonmessage = new JSONObject();
+                JSONObject jsonvalues = new JSONObject();
+
+                byte[] encodedPayload = new byte[0];
+                try {
+                    jsonmessage.put("type", type);
+                    //jsonvalues.put(command_id, command);
+                    jsonmessage.put("commands", command);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                publishMessage(jsonmessage);
+            }
+        }).start();
     }
 
     private void publishMessage(JSONObject jsonmessage){
+        Log.e("publishmessage", "publish");
         MqttMessage message = new MqttMessage();
-        message.setQos(1);
+        message.setQos(2);
         message.setRetained(false);
         message.setPayload(jsonmessage.toString().getBytes());
         try {
@@ -80,17 +94,17 @@ public class MyMqttClient {
     }
 
     public String waitForAnswer(){
-        if (!myMqttCallback.isMessageReceived()){
-            return "NOTHING:NOTHING";
-        }
+        String answer = myMqttCallback.getAnswer();
         myMqttCallback.clearMessageFlag();
-        return myMqttCallback.getAnswer();
+        isMessageReady = false;
+        return answer;
+        // return "NOTHING::NOTHING";
     }
 
     public void subscribetoTopic(String topic, Context context) {
         try {
             Log.w("ERROR=", topic + String.valueOf(client.isConnected()));
-            client.subscribe(topic, 0, context, new IMqttActionListener() {
+            client.subscribe(topic, 2, context, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.i("subscribed success", "subscribed succeed");
@@ -157,6 +171,24 @@ public class MyMqttClient {
             cport = port;
         }
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!Thread.currentThread().isInterrupted()){
+                    if (myMqttCallback.isMessageReceived()){
+                        Log.i("run", "message received " + myMqttCallback.isMessageReceived());
+                        isMessageReady = true;
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        isMessageReady = false;
+                        myMqttCallback.clearMessageFlag();
+                    }
+                }
+            }
+        }).start();
         return client.isConnected();
     }
 
