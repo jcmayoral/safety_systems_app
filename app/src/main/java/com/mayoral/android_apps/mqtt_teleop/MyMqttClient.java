@@ -95,7 +95,7 @@ public class MyMqttClient {
 
     public String waitForAnswer(){
         String answer = myMqttCallback.getAnswer();
-        myMqttCallback.clearMessageFlag();
+        MainActivity.setMessageReceived(false);
         isMessageReady = false;
         return answer;
         // return "NOTHING::NOTHING";
@@ -175,8 +175,8 @@ public class MyMqttClient {
             @Override
             public void run() {
                 while (!Thread.currentThread().isInterrupted()){
-                    if (myMqttCallback.isMessageReceived()){
-                        Log.i("run", "message received " + myMqttCallback.isMessageReceived());
+                    if (MainActivity.isMessageReceived()){
+                        Log.i("run", "message received " + MainActivity.isMessageReceived());
                         isMessageReady = true;
                         try {
                             Thread.sleep(1000);
@@ -184,7 +184,7 @@ public class MyMqttClient {
                             e.printStackTrace();
                         }
                         isMessageReady = false;
-                        myMqttCallback.clearMessageFlag();
+                        MainActivity.setMessageReceived(false);
                     }
                 }
             }

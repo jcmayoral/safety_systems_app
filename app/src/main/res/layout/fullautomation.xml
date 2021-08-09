@@ -33,11 +33,34 @@
             android:text="Emergency Stop"
             android:textSize="24sp" />
 
-        <Switch
-            android:id="@+id/switch2"
+        <include
+            layout="@layout/bag_selection_bar"
             android:layout_width="match_parent"
-            android:layout_height="116dp"
-            android:text="Mode Activation" />
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Cycle" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Stop Cycle" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GO TO COLLECTOR" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GO TO BATTERY" />
 
     </LinearLayout>
 

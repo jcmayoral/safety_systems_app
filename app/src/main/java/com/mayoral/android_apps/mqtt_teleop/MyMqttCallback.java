@@ -8,15 +8,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MyMqttCallback implements MqttCallback {
     static String answer ="ERROR";
-    static boolean answer_ready = false;
-
-    public static boolean isMessageReceived(){
-        return  answer_ready;
-    }
-
-    public static void clearMessageFlag(){
-        answer_ready = false;
-    }
 
     public  static String getAnswer(){
         return answer;
@@ -32,7 +23,7 @@ public class MyMqttCallback implements MqttCallback {
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         Log.e("message arrived", "topic: " + topic + ", msg: " + new String(message.getPayload()));
         answer = new String(message.getPayload());
-        answer_ready = true;
+        MainActivity.setMessageReceived(true);
     }
 
     @Override

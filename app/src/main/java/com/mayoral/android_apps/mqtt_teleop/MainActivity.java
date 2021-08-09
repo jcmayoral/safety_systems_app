@@ -26,7 +26,13 @@ public class MainActivity extends Activity {
     private Button settingsButton;
     private static RobotState robot_state;
     private static MyMqttClient myMqttClient;
-
+    public static boolean answer_ready;
+    public static void setMessageReceived(boolean flag){
+        answer_ready = flag;
+    }
+    public  static boolean isMessageReceived(){
+        return answer_ready;
+    }
 
     public static RobotState getState(){
         return robot_state;
@@ -52,6 +58,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_AppCompat_DayNight);
         setContentView(R.layout.mode_selector);
+        answer_ready = false;
+
         //myMqttClient = new MyMqttClient();
 
         settingsButton = (Button) findViewById(R.id.settings_button);
