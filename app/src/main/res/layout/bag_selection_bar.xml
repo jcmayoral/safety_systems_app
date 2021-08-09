@@ -5,16 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:columnCount="2"
+        android:rowCount="1">
+        >
 
         <Button
             android:id="@+id/record_data_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="Data Recording"
             android:visibility="visible" />
 
@@ -22,9 +26,10 @@
             android:id="@+id/config_recording"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="Configure"
             android:visibility="visible"
             tools:visibility="visible" />
-    </LinearLayout>
+    </GridLayout>
 </FrameLayout>

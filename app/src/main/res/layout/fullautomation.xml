@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/top_bar"
-        android:layout_width="fill_parent"
+    <include
+        layout="@layout/top_bar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 
     <LinearLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
@@ -38,30 +38,69 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+
+
+    </LinearLayout>
+    <!--TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+
+    </TableRow-->
+
+
+    <!--TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+    </TableRow-->
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="2"
+        android:rowCount="2">
+
         <Button
             android:id="@+id/button2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_rowWeight="2"
+            android:layout_columnWeight="1"
+            android:layout_weight="1"
             android:text="Start Cycle" />
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_weight="1"
             android:text="Stop Cycle" />
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_rowWeight="2"
+            android:layout_columnWeight="1"
+            android:layout_weight="1"
             android:text="GO TO COLLECTOR" />
 
         <Button
             android:id="@+id/button5"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_rowWeight="2"
+            android:layout_columnWeight="1"
+            android:layout_weight="1"
             android:text="GO TO BATTERY" />
 
-    </LinearLayout>
-
+    </GridLayout>
 </LinearLayout>

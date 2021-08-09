@@ -1,42 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/app_name"
+        android:textSize="24sp" />
+
+    <View
+        android:id="@+id/divider2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="?android:attr/listDivider"
-            tools:ignore="MissingConstraints" />
+        android:layout_height="20dp"
+        android:background="?android:attr/listDivider"/>
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="@string/app_name"
-            android:textSize="24sp"
-            tools:ignore="MissingConstraints" />
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="?android:attr/listDivider"
-            tools:ignore="MissingConstraints" />
-
-        <Button
-            android:id="@+id/settings_button"
-            android:layout_width="match_parent"
-            android:layout_height="50dip"
-            android:onClick="settings"
-            android:text="@string/settings" />
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/settings_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:onClick="settings"
+        android:text="@string/settings" />
+</LinearLayout>
