@@ -1,5 +1,7 @@
 package com.mayoral.android_apps.mqtt_teleop;
 
+import static com.mayoral.android_apps.mqtt_teleop.BagSelector.setList;
+
 import android.util.Log;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -21,9 +23,10 @@ public class MyMqttCallback implements MqttCallback {
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        Log.e("message arrived", "topic: " + topic + ", msg: " + new String(message.getPayload()));
+        Log.w("message arrived", "topic: " + topic + ", msg: " + new String(message.getPayload()));
         answer = new String(message.getPayload());
         MainActivity.setMessageReceived(true);
+        setList(answer);
     }
 
     @Override

@@ -14,7 +14,7 @@ import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 public class TeleoperationActivity extends Activity {
 	private Button backButton;
-	//static EStopPublisher estop;
+	//static EStopPublisher estop;ret
 	Button configButton;
 	Button bagrecordingButton;
 

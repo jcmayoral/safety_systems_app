@@ -19,6 +19,7 @@ package com.mayoral.android_apps.mqtt_teleop;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -29,8 +30,10 @@ public class MainActivity extends Activity {
     public static boolean answer_ready;
     public static void setMessageReceived(boolean flag){
         answer_ready = flag;
+        Log.e("mqtt","update message received to "+ flag);
     }
     public  static boolean isMessageReceived(){
+        //Log.e("mqtt","return " + answer_ready);
         return answer_ready;
     }
 

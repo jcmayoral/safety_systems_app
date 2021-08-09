@@ -18,14 +18,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class BagSelector extends Activity {
-    private ListView listView;
+    static public ListView listView;
     private Button backButton;
     private Button saveBagButton;
     private  Button refreshButton;
+    static protected ArrayAdapter adapter;
+
     MyMqttClient myMqttClient;
     RobotState robot_state;
     Timer responseTimer;
     TimerTask myTimerTask;
+    static private Thread th1;
 
     static public List<Boolean> selectedTopics;
     private static  String[] GENRES = new String[] {
@@ -80,11 +83,53 @@ public class BagSelector extends Activity {
             }
         });
 
+        adapter = new ArrayAdapter<String>(this, R.layout.topic_layout, GENRES);
+        listView.setAdapter(adapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                if (listView.isItemChecked(position)){
+                    listView.setItemChecked(position, true);
+                    selectedTopics.set(position,true);
+                }
+                else{
+                    listView.setItemChecked(position, false);
+                    selectedTopics.set(position,true);
+                }
+                Log.e("Selector", String.valueOf(position));
+            }
+        });
+
+
         myMqttClient = MainActivity.getMyMqttClient();
         robot_state = MainActivity.getState();
         //TODO Unsubscribe
         selectedTopics = new ArrayList<Boolean>();
+        listView =(ListView)findViewById(R.id.list);
+
         //initList();
+    }
+
+    static void initList(){
+        Log.i("init ", "0");
+        //Resize List to length of number of topics
+        selectedTopics = new ArrayList<Boolean>();
+        for (int i =0; i< GENRES.length; i++) {
+            Log.i("topic", GENRES[i]);
+            selectedTopics.add(false);
+        }
+        adapter = new ArrayAdapter<String>(adapter.getContext(),
+                R.layout.topic_layout,
+                GENRES);
+        listView.setAdapter(adapter);
+        Log.e("INIT", String.valueOf(selectedTopics.size()));
+    }
+
+
+    static void setList(String rawString){
+        GENRES = rawString.split(":");
+        initList();
     }
 
     void refreshList() {
@@ -105,39 +150,49 @@ public class BagSelector extends Activity {
                 100);
          */
         myMqttClient.publishCommand("ROSTOPIC", MyUtils.generateSimpleJSON("ACTION", "REFRESH"));
-        String answer = myMqttClient.waitForAnswer();
-        GENRES = answer.split(":");
-        Log.e("Received", answer);
-        initList();
-    }
+        /*
+        th1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("th1", "this thread");
 
-    void initList(){
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
-                R.layout.topic_layout, GENRES);
-        //Resize List to length of number of topics
-        selectedTopics = new ArrayList<Boolean>();
-        for (int i =0; i< GENRES.length; i++) {
-            selectedTopics.add(false);
-        }
+                while (!Thread.currentThread().isInterrupted()) {
+                    if (MainActivity.isMessageReceived()) {
+                        Log.i("MA ", String.valueOf(MainActivity.isMessageReceived()));
+                    //{
+                        Log.w("in", "loop");
+                        String answer = myMqttClient.waitForAnswer();
+                        GENRES = answer.split(":");
+                        Log.e("Received", answer);
+                        Thread.currentThread().interrupt();
+                        MainActivity.setMessageReceived(false);
+                    }
+                    else{
+                        try {
+                            Log.i("waith", "thread");
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-        Log.e("INIT", String.valueOf(selectedTopics.size()));
-
-        listView.setAdapter(adapter);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                if (listView.isItemChecked(position)){
-                    listView.setItemChecked(position, true);
-                    selectedTopics.set(position,true);
                 }
-                else{
-                    listView.setItemChecked(position, false);
-                    selectedTopics.set(position,true);
-                }
-                Log.e("Selector", String.valueOf(position));
             }
-        });
+        }
+        );
 
+        Log.i("befor", "thread");
+        th1.start();
+        try {
+            Log.i("thread", "before join");
+            th1.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i("after", "thread");
+         */
+
+        //initList();
     }
+
 }

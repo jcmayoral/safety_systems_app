@@ -15,6 +15,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Time;
+
 public class MyMqttClient {
     String clientId;
     final String UPSTREAM_TOPIC = "grass/safety_request";
@@ -102,6 +104,7 @@ public class MyMqttClient {
     }
 
     public void subscribetoTopic(String topic, Context context) {
+
         try {
             Log.w("ERROR=", topic + String.valueOf(client.isConnected()));
             client.subscribe(topic, 2, context, new IMqttActionListener() {
@@ -171,6 +174,7 @@ public class MyMqttClient {
             cport = port;
         }
 
+        /*
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -183,12 +187,13 @@ public class MyMqttClient {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        isMessageReady = false;
-                        MainActivity.setMessageReceived(false);
+                        //isMessageReady = false;
+                        //MainActivity.setMessageReceived(false);
                     }
                 }
             }
         }).start();
+        */
         return client.isConnected();
     }
 
