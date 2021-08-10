@@ -1,6 +1,9 @@
 package com.mayoral.android_apps.mqtt_teleop;
 
 
+import static com.mayoral.android_apps.mqtt_teleop.R.layout.popupwindow;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +18,7 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,13 +34,14 @@ public class BagSelector extends Activity {
     private  Button refreshButton;
     private PopupWindow popupWindow;
     static protected ArrayAdapter adapter;
-    GridLayout gridlayout1;
+    LinearLayout linearlayout1;
+    View popupView;
 
     MyMqttClient myMqttClient;
     RobotState robot_state;
     Timer responseTimer;
     TimerTask myTimerTask;
-    static private Thread th1;
+    public Thread th1;
 
     static public List<Boolean> selectedTopics;
     private static  String[] GENRES = new String[] {
@@ -44,6 +49,7 @@ public class BagSelector extends Activity {
             "Foreign", "History", "Independent", "Romance", "Sci-Fi", "Television", "Thriller", "BLABLA"
     };
 
+    @SuppressLint("ResourceType")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +57,7 @@ public class BagSelector extends Activity {
         listView =(ListView)findViewById(R.id.list);
         myMqttClient = MainActivity.getMyMqttClient();
 
-        gridlayout1 = findViewById(R.id.baggridlayout);
+        linearlayout1 = findViewById(R.id.baglinearlayout);
 
         backButton = (Button) findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +66,26 @@ public class BagSelector extends Activity {
                 onBackPressed();
             }
         });
+
+        /*
+        popupWindow = new PopupWindow(this);
+        popupView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+        popupWindow.setContentView(popupView);
+        popupWindow.showAtLocation(gridlayout1, Gravity.CENTER, 0, 0);
+
+
+        popupWindow = new PopupWindow(this);
+        //popupWindow.setContentView(findViewById(R.layout.popupwindow));
+        popupWindow.showAtLocation(findViewById(R.layout.bag_selection_bar), Gravity.BOTTOM, 10, 10);
+        //setContentView(mainLayout);
+        */
+
 
         saveBagButton = (Button) findViewById(R.id.save_bag_button);
         saveBagButton.setOnClickListener(new View.OnClickListener() {
@@ -160,23 +186,16 @@ public class BagSelector extends Activity {
                 100);
          */
         myMqttClient.publishCommand("ROSTOPIC", MyUtils.generateSimpleJSON("ACTION", "REFRESH"));
-        /*
         th1 = new Thread(new Runnable() {
             @Override
             public void run() {
                 Log.i("th1", "this thread");
+                boolean flag = true;
 
-                while (!Thread.currentThread().isInterrupted()) {
-                    boolean flag = true;
-                    if (MainActivity.isMessageReceived() && flag) {
+                while (!Thread.currentThread().isInterrupted()&& flag) {
+                    if (MainActivity.isMessageReceived()) {
                         Log.e("thread", "popUP");
-                        //Create a View object yourself through inflater
-                        LayoutInflater inflater = (LayoutInflater) BagSelector.this.getSystemService(LAYOUT_INFLATER_SERVICE);
-                        View popupView = inflater.inflate(R.layout.popupwindow, null);
-                        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                        //display the popup window
-                        popupWindow.showAtLocation(gridlayout1, Gravity.CENTER, 0, 0);
+                        //popupWindow.showAtLocation(gridlayout1, Gravity.TOP, 0, 0);
                         flag = false;
                     }
                 }
@@ -184,8 +203,7 @@ public class BagSelector extends Activity {
         });
 
         th1.start();
-        //initList();
-         */
+        //initList()
     }
 
 }

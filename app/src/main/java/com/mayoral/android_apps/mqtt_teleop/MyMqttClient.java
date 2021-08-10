@@ -170,6 +170,7 @@ public class MyMqttClient {
         }
 
         if (client.isConnected()){
+            Log.e("mqtt", "save host and port");
             chost = ipAddress;
             cport = port;
         }

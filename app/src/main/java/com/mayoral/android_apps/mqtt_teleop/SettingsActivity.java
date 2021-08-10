@@ -46,6 +46,7 @@ public class SettingsActivity extends Activity {
         portText = (EditText)findViewById(R.id.port);
 
         if (savedInstanceState != null){
+            Log.i("sttings", "saved instance != null");
             ipaddressText.setText(savedInstanceState.getString("ip"));
             portText.setText(String.valueOf(savedInstanceState.getInt("port")));
         }
@@ -101,7 +102,11 @@ public class SettingsActivity extends Activity {
         myMqttClient = new MyMqttClient();//getApplicationContext(), serveruri, clientId);
         //myMqttClient = new MyMqttClient();//getApplicationContext(), ipAddress, clientId);
         boolean result = myMqttClient.connectMqtt(getApplicationContext(), ipAddress, 1883);
-
+        Log.w("connection result ", String.valueOf(result));
+        if (result){
+            myMqttClient.setHost(ipAddress);
+            myMqttClient.setPort(port);
+        }
         //if (myMqttClient.isConnectionDone()) {
         //    Log.e("settings", "subscribing to grass/estop");
         //    myMqttClient.subscribeTopic("grass/estop");
@@ -126,6 +131,7 @@ public class SettingsActivity extends Activity {
         super.onResume();
         if (myMqttClient!= null){
             if (myMqttClient.client.isConnected()) {
+                Log.i("settings resume", myMqttClient.getHost());
                 ipaddressText.setText(myMqttClient.getHost());
                 portText.setText(String.valueOf(myMqttClient.getPort()));
             }
