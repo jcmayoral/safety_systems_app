@@ -10,8 +10,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:columnCount="2"
-        android:rowCount="1">
-        >
+        android:rowCount="1"
+        android:id= "@+id/baggridlayout"
+        tools:ignore="InvalidId">
 
         <Button
             android:id="@+id/record_data_button"

@@ -3,10 +3,12 @@ package com.mayoral.android_apps.mqtt_teleop;
 import static com.mayoral.android_apps.mqtt_teleop.BagSelector.setList;
 
 import android.util.Log;
+import android.widget.PopupWindow;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONObject;
 
 public class MyMqttCallback implements MqttCallback {
     static String answer ="ERROR";
@@ -23,10 +25,18 @@ public class MyMqttCallback implements MqttCallback {
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        Log.w("message arrived", "topic: " + topic + ", msg: " + new String(message.getPayload()));
-        answer = new String(message.getPayload());
-        MainActivity.setMessageReceived(true);
-        setList(answer);
+        JSONObject jsonmsg = new JSONObject(message.toString());
+        Log.w("message in json", "msg " + jsonmsg.toString());
+
+        answer = jsonmsg.getString("msg");
+        String type = jsonmsg.getString("type");
+        Log.w("message arrived", "topic: " + topic + ", msg: " + answer + " type " + type);
+        MainActivity.setMessageReceived(true);;
+
+        //RETURN LIST TOPIC
+        if (type.compareTo("ROSTOPIC")==0) {
+            setList(answer);
+        }
     }
 
     @Override

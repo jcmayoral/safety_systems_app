@@ -20,14 +20,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.PopupWindow;
 
 public class MainActivity extends Activity {
     private Button settingsButton;
     private static RobotState robot_state;
     private static MyMqttClient myMqttClient;
     public static boolean answer_ready;
+    public static PopupWindow popupWindow;
+
     public static void setMessageReceived(boolean flag){
         answer_ready = flag;
         Log.e("mqtt","update message received to "+ flag);

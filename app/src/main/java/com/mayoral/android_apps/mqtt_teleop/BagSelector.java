@@ -4,11 +4,17 @@ package com.mayoral.android_apps.mqtt_teleop;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +28,9 @@ public class BagSelector extends Activity {
     private Button backButton;
     private Button saveBagButton;
     private  Button refreshButton;
+    private PopupWindow popupWindow;
     static protected ArrayAdapter adapter;
+    GridLayout gridlayout1;
 
     MyMqttClient myMqttClient;
     RobotState robot_state;
@@ -42,6 +50,8 @@ public class BagSelector extends Activity {
         setContentView(R.layout.topics_selection);
         listView =(ListView)findViewById(R.id.list);
         myMqttClient = MainActivity.getMyMqttClient();
+
+        gridlayout1 = findViewById(R.id.baggridlayout);
 
         backButton = (Button) findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -157,42 +167,25 @@ public class BagSelector extends Activity {
                 Log.i("th1", "this thread");
 
                 while (!Thread.currentThread().isInterrupted()) {
-                    if (MainActivity.isMessageReceived()) {
-                        Log.i("MA ", String.valueOf(MainActivity.isMessageReceived()));
-                    //{
-                        Log.w("in", "loop");
-                        String answer = myMqttClient.waitForAnswer();
-                        GENRES = answer.split(":");
-                        Log.e("Received", answer);
-                        Thread.currentThread().interrupt();
-                        MainActivity.setMessageReceived(false);
-                    }
-                    else{
-                        try {
-                            Log.i("waith", "thread");
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    boolean flag = true;
+                    if (MainActivity.isMessageReceived() && flag) {
+                        Log.e("thread", "popUP");
+                        //Create a View object yourself through inflater
+                        LayoutInflater inflater = (LayoutInflater) BagSelector.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+                        View popupView = inflater.inflate(R.layout.popupwindow, null);
+                        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+                        //display the popup window
+                        popupWindow.showAtLocation(gridlayout1, Gravity.CENTER, 0, 0);
+                        flag = false;
+                    }
                 }
             }
-        }
-        );
+        });
 
-        Log.i("befor", "thread");
         th1.start();
-        try {
-            Log.i("thread", "before join");
-            th1.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.i("after", "thread");
-         */
-
         //initList();
+         */
     }
 
 }
