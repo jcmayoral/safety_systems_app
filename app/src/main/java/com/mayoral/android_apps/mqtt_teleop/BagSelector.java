@@ -1,7 +1,7 @@
 package com.mayoral.android_apps.mqtt_teleop;
 
 
-import static com.mayoral.android_apps.mqtt_teleop.R.layout.popupwindow;
+//import static com.mayoral.android_apps.mqtt_teleop.R.layout.popupwindow;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -57,7 +57,7 @@ public class BagSelector extends Activity {
         listView =(ListView)findViewById(R.id.list);
         myMqttClient = MainActivity.getMyMqttClient();
 
-        linearlayout1 = findViewById(R.id.baglinearlayout);
+        //linearlayout1 = findViewById(R.id.baglinearlayout);
 
         backButton = (Button) findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {

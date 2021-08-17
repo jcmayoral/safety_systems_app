@@ -28,7 +28,7 @@ public class FullAutomationActivity extends Activity {
 
 		Button button = (Button) findViewById(R.id.button);
 		button.setBackgroundColor(MyUtils.selectColor(robot_state.estop));
-		myMqttClient.publishCommand("XMode", MyUtils.generateXMODEJSON("FullAutonomous","START"));
+		myMqttClient.publishCommand("XMode", MyUtils.generateXMsg("FullAutonomous","START"));
 	}
 
 	public void pressEStop(View view){
@@ -39,12 +39,21 @@ public class FullAutomationActivity extends Activity {
 		myMqttClient.publishEStop(robot_state.estop);
 		view.setBackgroundColor(MyUtils.selectColor(robot_state.estop));
 	}
-	
+
+	public void starRun(View view){
+		if (!myMqttClient.client.isConnected()){
+			return;
+		}
+		myMqttClient.publishCommand("XECUTE", MyUtils.generateXMsg("FullAutonomous","START"));
+		view.setBackgroundColor(MyUtils.selectColor(true));
+	}
+
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		MainActivity.setState(robot_state);
-		myMqttClient.publishCommand("XMode", MyUtils.generateXMODEJSON("FullAutonomous","STOP"));
+		myMqttClient.publishCommand("XMode", MyUtils.generateXMsg("FullAutonomous","STOP"));
 
 	}
 

@@ -73,6 +73,7 @@
             android:layout_rowWeight="2"
             android:layout_columnWeight="1"
             android:layout_weight="1"
+            android:onClick="starRun"
             android:text="Start Cycle" />
 
         <Button

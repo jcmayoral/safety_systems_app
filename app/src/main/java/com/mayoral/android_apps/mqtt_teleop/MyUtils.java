@@ -16,7 +16,7 @@ public class MyUtils {
         return jobject;
     }
 
-    static JSONObject generateXMODEJSON(String mode, String action) {
+    static JSONObject generateXMsg(String mode, String action) {
         JSONObject jobject = new JSONObject();
         try {
             jobject.put("MODE", mode);

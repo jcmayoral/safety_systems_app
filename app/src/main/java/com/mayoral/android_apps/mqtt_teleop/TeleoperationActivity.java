@@ -166,7 +166,7 @@ public class TeleoperationActivity extends Activity {
 		Button button = (Button) findViewById(R.id.button);
 		button.setBackgroundColor(MyUtils.selectColor(robot_state.estop));
 
-		myMqttClient.publishCommand("XMode", MyUtils.generateXMODEJSON("Teleoperation","START"));
+		myMqttClient.publishCommand("XMode", MyUtils.generateXMsg("Teleoperation","START"));
 
 		configButton = (Button) findViewById(R.id.config_recording);
 		configButton.setOnClickListener(new View.OnClickListener() {
@@ -248,7 +248,7 @@ public class TeleoperationActivity extends Activity {
 		super.onDestroy();
 		MainActivity.setState(robot_state);
 		myMqttClient.publishCommand("ROSTOPIC",  MyUtils.generateDataJSON("RECORD", Boolean.toString(false)));
-		myMqttClient.publishCommand("XMode", MyUtils.generateXMODEJSON("Teleoperation","STOP"));
+		myMqttClient.publishCommand("XMode", MyUtils.generateXMsg("Teleoperation","STOP"));
 	}
 
 
