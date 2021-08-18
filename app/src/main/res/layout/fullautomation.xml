@@ -63,8 +63,8 @@
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnCount="2"
-        android:rowCount="2">
+        android:columnCount="1"
+        android:rowCount="3">
 
         <Button
             android:id="@+id/button2"
@@ -83,6 +83,7 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_weight="1"
+            android:onClick="stopRun"
             android:text="Stop Cycle" />
 
         <Button
@@ -92,16 +93,8 @@
             android:layout_rowWeight="2"
             android:layout_columnWeight="1"
             android:layout_weight="1"
+            android:onClick="unload"
             android:text="GO TO COLLECTOR" />
-
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_rowWeight="2"
-            android:layout_columnWeight="1"
-            android:layout_weight="1"
-            android:text="GO TO BATTERY" />
 
     </GridLayout>
 </LinearLayout>
