@@ -64,6 +64,15 @@ public class FullAutomationActivity extends Activity {
 		view.setBackgroundColor(MyUtils.selectColor(true));
 	}
 
+	public void resumeRun(View view){
+		if (!myMqttClient.client.isConnected()){
+			return;
+		}
+		myMqttClient.publishCommand("XECUTE", MyUtils.generateXMsg("FullAutonomous","RESUME"));
+		view.setBackgroundColor(MyUtils.selectColor(true));
+	}
+
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
