@@ -10,6 +10,18 @@ public class FullAutomationActivity extends Activity {
 	private Button backButton;
 	MyMqttClient myMqttClient;
 	RobotState robot_state;
+	int task_id;
+	int type_id;
+
+	public enum EXECUTION_TYPE{
+		DRY,
+		NORMAL
+	};
+
+	public enum TASKS{
+			CUT,
+			COLLECT
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +85,12 @@ public class FullAutomationActivity extends Activity {
 	}
 
 
+	public void startExecution(View view){
+		String[] commands = {"TASK", "TYPE"};
+		double[] values = {task_id, type_id};
+		myMqttClient.publishCommand("XCUTE", MyUtils.generateNestedCommandsJSON("",commands, values));
+	}
+	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

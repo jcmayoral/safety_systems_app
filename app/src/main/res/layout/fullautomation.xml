@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:layout_insetEdge="top"
+    app:layout_scrollFlags="snapMargins|scroll|enterAlways|enterAlwaysCollapsed|exitUntilCollapsed">
 
     <include
         layout="@layout/top_bar"
@@ -28,16 +31,10 @@
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
-            android:layout_height="173dp"
+            android:layout_height="150dp"
             android:onClick="pressEStop"
             android:text="Emergency Stop"
             android:textSize="24sp" />
-
-        <include
-            layout="@layout/bag_selection_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
 
 
     </LinearLayout>
@@ -59,12 +56,36 @@
 
     </TableRow-->
 
+    <include
+        layout="@layout/tools_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnCount="2"
-        android:rowCount="2">
+        android:rowCount="3">
+
+
+        <!--CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_weight="1"
+            android:text="CheckBox" />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_weight="1"
+            android:text="CheckBox" /-->
 
         <Button
             android:id="@+id/button2"
@@ -107,4 +128,5 @@
             android:text="RESUME EXECUTION" />
 
     </GridLayout>
+
 </LinearLayout>

@@ -5,30 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <GridLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:columnCount="2"
-        android:rowCount="1">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/record_data_button"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/title_bag_selector"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:text="Data Recording"
-            android:visibility="visible" />
+            android:layout_weight="0"
+            android:clickable="false"
+            android:editable="false"
+            android:ems="10"
+            android:text="Data Recording Module" />
 
-        <Button
-            android:id="@+id/config_recording"
-            android:layout_width="wrap_content"
+        <GridLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:text="Configure"
-            android:visibility="visible"
-            tools:visibility="visible" />
-    </GridLayout>
+            android:columnCount="2"
+            android:orientation="horizontal"
+            android:rowCount="1">
+
+            <Button
+                android:id="@+id/record_data_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:text="Data Recording"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/config_recording"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:text="Configure"
+                android:visibility="visible"
+                tools:visibility="visible" />
+        </GridLayout>
+    </LinearLayout>
+
 </FrameLayout>

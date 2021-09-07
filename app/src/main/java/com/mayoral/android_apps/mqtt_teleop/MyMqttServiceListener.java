@@ -1,12 +1,16 @@
 package com.mayoral.android_apps.mqtt_teleop;
 
+import android.app.IntentService;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -15,9 +19,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Time;
-
-public class MyMqttClient {
+public class MyMqttServiceListener extends IntentService {
     String clientId;
     final String UPSTREAM_TOPIC = "grass/safety_request";
 
@@ -29,6 +31,21 @@ public class MyMqttClient {
 
     String chost = "10.0.0.24";
     int cport = 1883;
+
+    /**
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     *
+     * @param name Used to name the worker thread, important only for debugging.
+     */
+    public MyMqttServiceListener(String name) {
+        super(name);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+        return super.onStartCommand(intent,flags,startId);
+    }
 
     String getHost(){ return  chost;};
     int getPort(){ return cport;};
@@ -132,7 +149,6 @@ public class MyMqttClient {
             Log.e("connectMQtt", "connexion en progreso");
             return  false;
         }
-        final boolean[] flag = {false};
         /* Create an MqttConnectOptions object and configure the username and password. */
         mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
@@ -156,7 +172,6 @@ public class MyMqttClient {
                     if (client.isConnected()) {
                         subscribetoTopic("grass/safety_callback", null);
                     }
-                    flag[0] = true;
                 }
 
                 @Override
@@ -164,7 +179,6 @@ public class MyMqttClient {
                     Log.e("Mqtt", "error connecting");
                     Log.w("connected failed", "connect failed");
                     Log.w("Connected failed", exception.getMessage());
-                    flag[0] = false;
                 }
             });
 
@@ -176,7 +190,6 @@ public class MyMqttClient {
             Log.e("mqtt", "save host and port");
             chost = ipAddress;
             cport = port;
-            flag[0] = true;
         }
 
         /*
@@ -199,7 +212,7 @@ public class MyMqttClient {
             }
         }).start();
         */
-        return flag[0];//client.isConnected();
+        return client.isConnected();
     }
 
     //TODO implement
@@ -218,4 +231,13 @@ public class MyMqttClient {
     }
 
 
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        try{
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
 }

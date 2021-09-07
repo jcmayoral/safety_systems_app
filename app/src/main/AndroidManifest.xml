@@ -20,6 +20,8 @@
 
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
+        <service android:name=".MyMqttServiceListener" />
+
         <activity
             android:name=".BagSelector"
             android:label="@string/title_activity_bag_selection"></activity>
