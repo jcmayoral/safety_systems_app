@@ -17,6 +17,7 @@ public class TeleoperationActivity extends Activity {
 	//static EStopPublisher estop;ret
 	Button configButton;
 	Button bagrecordingButton;
+	Button toggleButton;
 
 	private TextView angle_view;
 	private TextView strength_view;
@@ -44,9 +45,9 @@ public class TeleoperationActivity extends Activity {
 		coordinate_view = findViewById(R.id.coordinate_view);
 		joystick = (JoystickView) findViewById(R.id.robot_control);
 
-		pwm_value = (TextView) findViewById(R.id.pwm_values);
+		pwm_value = (TextView) findViewById(R.id.pwm_1_values);
 
-		pwm_bar = (SeekBar) findViewById(R.id.pwm_seekbar);
+		pwm_bar = (SeekBar) findViewById(R.id.pwm_1);
 		pwm_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -76,9 +77,10 @@ public class TeleoperationActivity extends Activity {
 		});
 
 		recording = false;
+
 		pwm_value2 = (TextView) findViewById(R.id.pwm_values2);
 
-		pwm_bar2 = (SeekBar) findViewById(R.id.pwm_seekbar2);
+		pwm_bar2 = (SeekBar) findViewById(R.id.pwm_2);
 		pwm_bar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -107,6 +109,14 @@ public class TeleoperationActivity extends Activity {
 			}
 		});
 
+
+		toggleButton = (Button) findViewById(R.id.conveyor_button);
+		toggleButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				toggleConveyor(view);
+			}
+		});;
 
 		joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
 			//@SuppressLint("DefaultLocale")
