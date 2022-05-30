@@ -14,18 +14,33 @@
  * the License.
  */
 
-package com.github.rosjava.android_apps.teleop2;
+package com.mayoral.android_apps.mqtt_teleop;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.PopupWindow;
 
 public class MainActivity extends Activity {
-
+    private Button settingsButton;
     private static RobotState robot_state;
     private static MyMqttClient myMqttClient;
+    public static boolean answer_ready;
+    public static PopupWindow popupWindow;
 
+    public static void setMessageReceived(boolean flag){
+        answer_ready = flag;
+        Log.e("mqtt","update message received to "+ flag);
+    }
+    public  static boolean isMessageReceived(){
+        //Log.e("mqtt","return " + answer_ready);
+        return answer_ready;
+    }
 
     public static RobotState getState(){
         return robot_state;
@@ -35,20 +50,42 @@ public class MainActivity extends Activity {
         return myMqttClient;
     }
 
+    public static void setMyMqttClient(MyMqttClient mqttclient){ myMqttClient = mqttclient;}
+
     public static void setState(RobotState state){
         robot_state = state;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_AppCompat_DayNight);
         setContentView(R.layout.mode_selector);
-        myMqttClient = new MyMqttClient();
-        myMqttClient.run(getApplicationContext());
+        answer_ready = false;
+
+        //myMqttClient = new MyMqttClient();
+
+        settingsButton = (Button) findViewById(R.id.settings_button);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = settingsApp(view);
+                startActivity(intent);
+            }
+        });
 
     }
+
+    public Intent settingsApp(View view){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        return intent;
+    }
+
 
     public void teleOpMode(View view){
         Intent intent = new Intent(this, TeleoperationActivity.class);
@@ -61,7 +98,7 @@ public class MainActivity extends Activity {
     }
 
     public void fullAutomationMode(View view){
-        Intent intent = new Intent(this, FullAutonomationActivity.class);
+        Intent intent = new Intent(this, FullAutomationActivity.class);
         startActivity(intent);
     }
 }

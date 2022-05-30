@@ -1,60 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.rosjava.android_apps.teleop2"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.mayoral.android_apps.mqtt_teleop">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <application android:icon="@drawable/ic_amigos"
-                 android:label="@string/app_name"
-                 android:largeHeap="true"
-                 tools:replace="icon, label">
-        <service android:name="org.eclipse.paho.android.service.MqttService"/>
+    <application
+        android:icon="@drawable/ic_amigos"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        tools:replace="icon, label"
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
-        <activity android:name="com.github.rosjava.android_apps.teleop2.TeleoperationActivity"
-                  android:label="@string/app_name"
-                  android:screenOrientation="portrait">
-        </activity>
 
-        <activity android:name="com.github.rosjava.android_apps.teleop2.SemiAutomationActivity"
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
+        <activity
+            android:name=".BagSelector"
+            android:label="@string/title_activity_bag_selection"></activity>
+        <activity
+            android:name=".TeleoperationActivity"
+            android:label="@string/tabname1"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".SemiAutomationActivity"
+            android:label="@string/tabname2"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".FullAutomationActivity"
+            android:label="@string/tabname3"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name="com.github.rosjava.android_apps.teleop2.FullAutonomationActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
-
-        <activity android:name="com.github.rosjava.android_apps.teleop2.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="com.github.rosjava.android_apps.teleop2.TabMainActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
-
-        <!--activity android:name="org.ros.android.MasterChooser" />
-
-        <service android:name="org.ros.android.NodeMainExecutorService" >
-            <intent-filter>
-                <action android:name="org.ros.android.NodeMainExecutorService" />
-            </intent-filter>
-        </service-->
     </application>
+
 </manifest>

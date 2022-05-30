@@ -6,28 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/top_view"
+    <include layout="@layout/top_bar"
         android:layout_width="fill_parent"
-        android:layout_height="50dip"
-        android:background="#ff404040"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="50dip"
-            android:onClick="back"
-            android:text="Back" />
-
-        <LinearLayout
-            android:id="@+id/top_bar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#ff404040"
-            android:gravity="right"
-            android:orientation="horizontal" />
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/main_layout"
@@ -42,6 +23,21 @@
             android:gravity="center"
             android:text="Semi Automation Mode"
             android:textSize="30sp" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="3" />
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="bluetoothSwitch"
+            android:text="Switch" />
 
         <Button
             android:id="@+id/button"

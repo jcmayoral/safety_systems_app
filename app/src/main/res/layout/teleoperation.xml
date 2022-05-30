@@ -4,81 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:ignore="ExtraText">
+
+    <include
+        layout="@layout/top_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Teleoperation Mode"
+        android:textSize="30sp" />
 
     <LinearLayout
-        android:id="@+id/top_view"
-        android:layout_width="fill_parent"
-        android:layout_height="50dip"
-        android:background="#ff404040"
-        android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="273dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <Button
-            android:id="@+id/back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="50dip"
-            android:onClick="back"
-            android:text="Back" />
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:onClick="pressEStop"
+            android:text="Emergency Stop"
+            tools:layout_conversion_absoluteHeight="194dp"
+            tools:layout_conversion_absoluteWidth="87dp" />
 
-        <LinearLayout
-            android:id="@+id/top_bar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#ff404040"
-            android:gravity="right"
-            android:orientation="horizontal" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView5"
+        <include
+            layout="@layout/bag_selection_bar"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="Teleoperation Mode"
-            android:textSize="30sp" />
-
-        <Switch
-            android:id="@+id/switch1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="bluetoothSwitch"
-            android:text="Switch" />
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="10"
-            android:progress="3" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="242dp"
-            android:onClick="pressEStop"
-            android:text="Emergency Stop" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_gravity="center|center_vertical"
+                android:layout_weight="1">
 
                 <TextView
                     android:id="@+id/angle_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center|center_horizontal"
                     android:layout_weight="1"
                     android:text="TextView" />
 
@@ -86,6 +74,7 @@
                     android:id="@+id/strength_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center|center_horizontal"
                     android:layout_weight="1"
                     android:text="TextView" />
 
@@ -93,24 +82,140 @@
                     android:id="@+id/coordinate_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center|center_horizontal"
                     android:layout_weight="1"
                     android:text="TextView" />
 
-                <io.github.controlwear.virtual.joystick.android.JoystickView
-                    android:id="@+id/mqtt_joystick"
-                    android:layout_width="190dp"
-                    android:layout_height="260dp"
-                    custom:JV_backgroundColor="#009688"
-                    custom:JV_borderColor="#00796B"
-                    custom:JV_borderWidth="4dp"
-                    custom:JV_buttonColor="#FF6E40"
-                    custom:JV_buttonSizeRatio="15%"
-                    custom:JV_fixedCenter="false"
-                    />
             </LinearLayout>
 
-        </LinearLayout>
+            <EditText
+                android:id="@+id/editTextTextPersonName2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:editable="false"
+                android:ems="10"
+                android:text="Robot" />
 
+            <io.github.controlwear.virtual.joystick.android.JoystickView
+                android:id="@+id/robot_control"
+                android:layout_width="294dp"
+                android:layout_height="241dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                custom:JV_backgroundColor="#009688"
+                custom:JV_borderColor="#00796B"
+                custom:JV_borderWidth="4dp"
+                custom:JV_buttonColor="#FF1100"
+                custom:JV_buttonDirection="both"
+                custom:JV_buttonSizeRatio="20%"
+                custom:JV_buttonStickToBorder="false"
+                custom:JV_fixedCenter="false"
+                tools:layout_conversion_absoluteHeight="10dp"
+                tools:layout_conversion_absoluteWidth="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/editTextTextPersonName"
+                    android:layout_width="106dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:editable="false"
+                    android:ems="10"
+                    android:text="Tool" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editTextTextPersonName3"
+                    android:layout_width="106dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:clickable="false"
+                    android:editable="false"
+                    android:ems="10"
+                    android:text="Tool PWM" />
+
+                <TextView
+                    android:id="@+id/pwm_values"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="0" />
+
+                <SeekBar
+                    android:id="@+id/pwm_seekbar"
+                    android:layout_width="235dp"
+                    android:layout_height="55dp"
+                    android:max="255"
+                    android:progress="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/pwmname2"
+                    android:layout_width="106dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:clickable="false"
+                    android:editable="false"
+                    android:ems="10"
+                    android:text="Conveyor PWM" />
+
+                <TextView
+                    android:id="@+id/pwm_values2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="0" />
+
+                <SeekBar
+                    android:id="@+id/pwm_seekbar2"
+                    android:layout_width="235dp"
+                    android:layout_height="55dp"
+                    android:max="255"
+                    android:progress="0" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/conveyor_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="toggleConveyor"
+                android:text="Toggle Conveyor" />
+
+        </LinearLayout>
     </LinearLayout>
+
+    <!--
+        androd:buttonColor="#03A9F4"
+        app:stayPut="true"
+        app:percentage="25"
+        app:backgroundDrawable="R.drawable.background"
+        app:buttonDrawable="R.drawable.button"-->
+
 
 </LinearLayout>
