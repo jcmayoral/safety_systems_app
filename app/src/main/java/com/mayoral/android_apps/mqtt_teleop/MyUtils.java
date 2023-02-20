@@ -42,7 +42,6 @@ public class MyUtils {
         return jobject;
     }
 
-    /*
     static JSONObject generateDataJSON(String mode, String data) {
         JSONObject jobject = new JSONObject();
         try {
@@ -53,7 +52,6 @@ public class MyUtils {
         }
         return jobject;
     }
-    */
 
     static int selectColor(boolean flag){
         if (flag){

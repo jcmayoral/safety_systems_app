@@ -28,11 +28,16 @@ android {
     }
 }
 repositories{
+    mavenCentral()
     maven {
-        url"https://repo.eclipse.org/content/repositories/paho-releases/"
+        url "https://repo.eclipse.org/content/repositories/paho-releases/"
+    }
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
     }
 }
 dependencies {
+    implementation 'org.osmdroid:osmdroid-android:6.1.11'
     implementation 'io.github.controlwear:virtualjoystick:1.10.1'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.0'
