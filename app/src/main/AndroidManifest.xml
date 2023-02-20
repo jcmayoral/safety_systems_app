@@ -15,38 +15,38 @@
         android:icon="@drawable/ic_amigos"
         android:label="@string/app_name"
         android:largeHeap="true"
-        tools:replace="icon, label"
-        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+        tools:replace="icon, label">
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
         <service android:name=".MyMqttServiceListener" />
 
         <activity
             android:name=".BagSelector"
-            android:label="@string/title_activity_bag_selection"></activity>
+            android:label="@string/title_activity_bag_selection" />
         <activity
             android:name=".TeleoperationActivity"
             android:label="@string/tabname1"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SemiAutomationActivity"
             android:label="@string/tabname2"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".FullAutomationActivity"
             android:label="@string/tabname3"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SettingsActivity"
             android:label="Settings"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

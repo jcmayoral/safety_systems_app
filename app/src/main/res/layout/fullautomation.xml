@@ -57,7 +57,7 @@
     </TableRow-->
 
     <include
-        layout="@layout/tools_control"
+        layout="@layout/activity_tools_control"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
